@@ -9,7 +9,7 @@ window.title("TOEICVOCAMACA")
 window.geometry("400x500+100+100")
 window.resizable(False, False)
 
-font=tkinter.font.Font(family="맑은 고딕", size=20)
+font=tkinter.font.Font(family="맑은 고딕", size=24, weight="bold")
 
 label=tkinter.Label(window, text="TOEICVOCAMACA", width=20, height=2, font=font)
 label.pack()

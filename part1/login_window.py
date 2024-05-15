@@ -46,3 +46,7 @@ def open_login_window(window):
     join_button=tkinter.Button(login_window, width=10, bd=2, text="회원가입",command=lambda:open_join_window(window))
     join_button.pack()
 
+    close_button = tkinter.Button(login_window, text="닫기", command=login_window.destroy)
+    close_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
+
+    login_window.mainloop()
