@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 # from login_window import open_login_window
 
+
 def join():
     # entry.get() : 기입창의 텍스트를 문자열로 반환
     username = username_entry.get()
@@ -120,10 +121,13 @@ def open_join_window(window):
     join_button = tkinter.Button(join_window, text="회원가입", command=join)
     join_button.pack()
 
-def check_duplicate(username):
-    if check_duplicate_username(username)==True:
-        tkinter.messagebox.showinfo("에러", "이미 사용 중인 사용자 이름입니다.")
-    elif check_duplicate_username(username)==False:
-        tkinter.messagebox.showerror("알림", "사용 가능한 사용자 이름입니다.")
-    else:
-        tkinter.messagebox.showerror("에러", "사용자 이름을 입력하시오.")
+    close_button = tkinter.Button(join_window, text="닫기", command=join_window.destroy)
+    close_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
+
+    def check_duplicate(username):
+        if check_duplicate_username(username)==True:
+            tkinter.messagebox.showinfo("에러", "이미 사용 중인 사용자 이름입니다.")
+        elif check_duplicate_username(username)==False:
+            tkinter.messagebox.showerror("알림", "사용 가능한 사용자 이름입니다.")
+        else:
+            tkinter.messagebox.showerror("에러", "사용자 이름을 입력하시오.")

@@ -1,7 +1,30 @@
-# login_window.py
-
 import tkinter
+from tkinter import messagebox
+import json
 from join_window import open_join_window
+from user_window import open_user_window
+
+# JSON 파일에서 사용자 데이터를 로드하는 함수
+def load_user_data(filepath='users.json'):
+    # 예외 처리
+    try:
+        # 파일 불러와 'r'모드로 file에 저장
+        with open(filepath, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    # 파일 없을 때
+    except FileNotFoundError:
+        return []
+    # 시스템 에러
+    except json.JSONDecodeError:
+        return []
+
+# 사용자 이름과 비밀번호를 검증하는 함수
+def validate_login(username, password, user_data):
+    # user_data : 
+    for user in user_data:
+        if user['username'] == username and user['password'] == password:
+            return True
+    return False
 
 # 로그인 창을 열기 위한 함수를 정의합니다.
 def open_login_window(window):
@@ -30,20 +53,23 @@ def open_login_window(window):
         username = username_entry.get()
         password = password_entry.get()
 
-        # 더미로 설정된 사용자 이름과 비밀번호와 비교하여 로그인을 시도합니다.
-        if username == "user" and password == "password":
-            tkinter.messagebox.showinfo("로그인 성공", "로그인에 성공했습니다.")
+        # JSON 파일에서 사용자 데이터를 로드합니다.
+        user_data = load_user_data()
+
+        # 사용자 이름과 비밀번호를 검증합니다.
+        if validate_login(username, password, user_data):
+            messagebox.showinfo("로그인 성공", "로그인에 성공했습니다.")
             login_window.destroy()
-            # 여기에 로그인 성공 시 수행할 동작을 추가할 수 있습니다.
+            
+            open_user_window()
         else:
-            tkinter.messagebox.showerror("로그인 실패", "잘못된 사용자 이름 또는 비밀번호입니다.")
+            messagebox.showerror("로그인 실패", "잘못된 사용자 이름 또는 비밀번호입니다.")
 
     # 로그인 버튼을 만들고 윈도우에 추가합니다.
     login_button = tkinter.Button(login_window, text="로그인", command=login)
     login_button.pack()
 
-
-    join_button=tkinter.Button(login_window, width=10, bd=2, text="회원가입",command=lambda:open_join_window(window))
+    join_button = tkinter.Button(login_window, width=10, bd=2, text="회원가입", command=lambda: open_join_window(window))
     join_button.pack()
 
     close_button = tkinter.Button(login_window, text="닫기", command=login_window.destroy)
