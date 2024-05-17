@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from user_manager import UserManager  # UserManager는 사용자 관리를 위한 클래스로 가정
+from word_description_window import open_description_window  # 분리된 함수 임포트
 
 class LoginPage(tk.Frame):
     def __init__(self, parent, login_success_callback, show_signup_page_callback, user_manager):
@@ -24,6 +25,7 @@ class LoginPage(tk.Frame):
 
         tk.Button(self, text="로그인", command=self.login).pack()
         tk.Button(self, text="회원가입", command=self.show_signup_page_callback).pack()
+        tk.Button(self, text="단어장 설명", command=lambda: open_description_window(self)).pack()  # 단어장 설명 버튼 추가
 
     def login(self):
         username = self.username_var.get()
@@ -123,8 +125,8 @@ class App(tk.Tk):
         self.show_login_page()
 
     def show_word_list_page(self):
-        # 단어장 목록 페이지를 보여주는 기능을 구현할 수 있음
-        messagebox.showinfo("알림", "단어장 목록 페이지를 표시합니다.")
+        self.clear_window()
+        tk.Button(self, text="단어장 설명", command=lambda: open_word_description_window(self)).pack()
 
     def clear_window(self):
         for widget in self.winfo_children():
