@@ -1,10 +1,14 @@
-import csv
 from tkinter import *
 import random
+from wordDB import words
 
-# CSV 파일에서 문제들을 읽어옴
-with open("단어장 파일.csv", "r", encoding="UTF-8-sig") as file:
-    questions = list(csv.reader(file))
+
+# 각 딕셔너리의 key와 value 이름 설정
+new_key_name = "english_word"
+new_value_name = "korean_meaning"
+
+# 새로운 형식의 딕셔너리 리스트 생성
+new_questions = [{new_key_name: key, new_value_name: value} for item in words for key, value in item.items()]
 
 # 색깔 상수들 정의
 BGCOLOR = "#FFFFFF"     # 배경색
@@ -19,7 +23,7 @@ wrong_count = 0  # 틀린 문제 수
 
 # 다음 문제를 생성하는 함수
 def next_question():
-    global answer, current_question, correct_count, wrong_count
+    global answer, current_question, correct_count, wrong_count 
 
     # 모든 문제를 다 풀었으면 종료
     if current_question == total_questions:
@@ -68,14 +72,14 @@ def multi_choice_question():
         btn.pack()
         buttons.append(btn)
     # 문제 및 보기를 랜덤으로 선택
-    multi_choice = random.sample(questions, 4)
+    multi_choice = random.sample(new_questions, 4)
     answer = random.randint(0, 3)
-    cur_question = multi_choice[answer][0]
+    cur_question = multi_choice[answer][new_key_name]
     question_label.config(text=cur_question)
     
     # 버튼에 보기 할당
     for i in range(4):
-        buttons[i].config(text=multi_choice[i][1], command=lambda idx=i: check_answer(idx))
+        buttons[i].config(text=multi_choice[i][new_value_name], command=lambda idx=i: check_answer(idx))
 
 
     
@@ -86,9 +90,9 @@ def short_answer_question():
     global answer,entry,check_btn,next_btn
 
     # 문제 및 보기를 랜덤으로 선택
-    random_question = random.choice(questions)
-    cur_question = random_question[1]  # 영어 뜻
-    answer = random_question[0]        # 한글 단어
+    random_question = random.choice(new_questions)
+    cur_question = random_question[new_value_name]  # 영어 단어
+    answer = random_question[new_key_name]        # 한글 뜻
     question_label.config(text=cur_question)
 
     # 입력 창 생성
