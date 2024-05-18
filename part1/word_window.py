@@ -50,15 +50,20 @@ def open_wordlist_window():
     root.resizable(False, False)
 
     if words:
+        # 페이지 버튼을 위한 프레임 생성
+        button_frame = tk.Frame(root)
+        button_frame.pack(expand=True, pady=20)
+
         # 페이지 버튼 추가
         num_pages = (len(words) + words_per_page - 1) // words_per_page
 
         for page_num in range(1, num_pages + 1):
-            page_button = tk.Button(root, text=f"페이지 {page_num}", command=lambda num=page_num: display_words(num))
+            page_button = tk.Button(button_frame, text=f"페이지 {page_num}", command=lambda num=page_num: display_words(num))
             page_button.pack(side="top", pady=5)
 
+        # 닫기 버튼을 아래에 배치
         close_button = tk.Button(root, text="닫기", command=root.destroy)
-        close_button.pack(side="bottom", pady=5)
+        close_button.pack(side="bottom", pady=10)
 
         display_words(1)
 
