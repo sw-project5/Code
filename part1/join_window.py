@@ -79,7 +79,7 @@ def check_duplicate_username(username):
     return False
 
 def open_join_window(window):
-    join_window = tkinter.Toplevel(window)
+    join_window = tkinter.Tk()
     join_window.title("회원가입")
     join_window.geometry("400x500")
 

@@ -22,6 +22,4 @@ button_login.place(relx=0.5, rely=0.4, anchor=tkinter.CENTER)
 button_description=tkinter.Button(window, relief="flat" ,overrelief="groove",width=10, bd=2, text="단어장 설명", command=lambda:open_description_window(window))
 button_description.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
-
-
 window.mainloop()
