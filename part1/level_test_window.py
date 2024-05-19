@@ -28,6 +28,11 @@ def open_level_test_window():
     level_test_window.title("영어 퀴즈")
     level_test_window.config(padx=30, pady=10, bg="#FFFFFF")
 
+    # 사용자의 수준을 알아보기 위한 텍스트
+    level_text = tk.Label(level_test_window, text="사용자의 수준을 알아보기 위해 레벨 테스트를 진행하겠습니다.",
+                    font=("HanSans", 13), bg=BGCOLOR)
+    level_text.pack()
+
     # 문제 표시 레이블 생성
     question_label = tk.Label(level_test_window, width=30, height=4, text="test", font=("HanSans", 20, "bold"), bg="#FFFFFF", fg="black")
     question_label.pack()
