@@ -3,7 +3,7 @@ from tkinter import messagebox
 import json
 from join_window import open_join_window
 from level_test_window import open_level_test_window
-
+from user_window import open_user_window
 def load_user_data(filepath='users.json'):
     try:
         with open(filepath, 'r', encoding='utf-8') as file:
@@ -16,7 +16,7 @@ def load_user_data(filepath='users.json'):
 def validate_login(username, password, user_data):
     for user in user_data:
         if user['username'] == username and user['password'] == password:
-            return True
+            return user
     return False
 
 def open_login_window(window):
@@ -42,10 +42,21 @@ def open_login_window(window):
 
         user_data = load_user_data()
 
-        if validate_login(username, password, user_data):
+        user = validate_login(username, password, user_data)
+
+        if user:
             messagebox.showinfo("로그인 성공", "로그인에 성공했습니다.")
             login_window.destroy()
-            open_level_test_window()  # 레벨 확인 테스트 함수 호출
+
+            if user.get('firstlogin', True):
+                user['firstlogin'] = False
+                # 변경된 사용자 정보를 파일에 저장
+                with open('users.json', 'w') as file:
+                    json.dump(user_data, file, indent=4)
+                
+                open_level_test_window()  # 레벨 확인 테스트 함수 호출  
+            else:
+                open_user_window()
         else:
             messagebox.showerror("로그인 실패", "잘못된 사용자 이름 또는 비밀번호입니다.")
 

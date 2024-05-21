@@ -2,6 +2,31 @@
     {
         "username": "park",
         "password": "1234",
-        "birthday": "021022"
+        "birthday": "021022",
+        "firstlogin": false
+    },
+    {
+        "username": "aa",
+        "password": "aa",
+        "birthday": "010101",
+        "firstlogin": false
+    },
+    {
+        "username": "aaa",
+        "password": "aaa",
+        "birthday": "010101",
+        "firstlogin": true
+    },
+    {
+        "username": "1",
+        "password": "1",
+        "birthday": "010101",
+        "firstlogin": false
+    },
+    {
+        "username": "2",
+        "password": "2",
+        "birthday": "020202",
+        "firstlogin": false
     }
 ]

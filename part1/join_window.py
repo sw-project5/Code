@@ -45,7 +45,8 @@ def join():
     user_data = {
         "username": username,
         "password": password,
-        "birthday": birthday
+        "birthday": birthday,
+        'firstlogin':True
     }
 
     # 사용자 데이터 추가
