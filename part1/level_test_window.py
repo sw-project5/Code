@@ -3,6 +3,25 @@ from tkinter import messagebox
 from wordDB import words
 import random
 from user_window import open_user_window
+import json
+
+# 사용자 데이터 로드 함수
+def load_user_data(filepath='users.json'):
+    try:
+        with open(filepath, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        return []
+
+# 로그인 검증 함수
+def validate_login(username, password, user_data):
+    for user in user_data:
+        if user['username'] == username and user['password'] == password:
+            return user
+    return False
+
 # 각 딕셔너리의 key와 value 이름 설정
 new_key_name = "english_word"
 new_value_name = "korean_meaning"
@@ -21,16 +40,26 @@ total_questions = 20  # 총 문제 수
 correct_count = 0  # 맞은 문제 수
 wrong_count = 0  # 틀린 문제 수
 
-def open_level_test_window():
-    # Tkinter 창 생성
-    global answer, current_question, correct_count, wrong_count
+# 전역 변수로 사용자 이름 저장
+current_user = None
+
+def open_level_test_window(username):
+    global answer, current_question, correct_count, wrong_count, current_user
+    
+
+    # 변수 초기화
+    current_user = username
+    correct_count = 0
+    wrong_count = 0
+    current_question = 0
+
     level_test_window = tk.Tk()
     level_test_window.title("영어 퀴즈")
     level_test_window.config(padx=30, pady=10, bg="#FFFFFF")
 
     # 사용자의 수준을 알아보기 위한 텍스트
     level_text = tk.Label(level_test_window, text="사용자의 수준을 알아보기 위해 레벨 테스트를 진행하겠습니다.",
-                    font=("HanSans", 13), bg=BGCOLOR)
+                          font=("HanSans", 13), bg=BGCOLOR)
     level_text.pack()
 
     # 문제 표시 레이블 생성
@@ -49,17 +78,11 @@ def open_level_test_window():
     # 초기 문제 생성
     next_question(level_test_window, question_label, progress_label, progress_canvas)
 
-    # Tkinter 창 실행
-    
-    
-
-
 def next_question(window, question_label, progress_label, progress_canvas):
     global answer, current_question, correct_count, wrong_count
 
     # 모든 문제를 다 풀었으면 종료
     if current_question == total_questions:
-        
         for widget in window.winfo_children():
             widget.destroy()
         show_level()
@@ -69,7 +92,7 @@ def next_question(window, question_label, progress_label, progress_canvas):
         
         open_user_window()
         return
-        
+
     # 홀수 번째 문제는 4지선다형, 짝수 번째 문제는 단답형으로 생성
     if current_question % 2 != 0:
         # 4지선다형 문제 생성
@@ -85,7 +108,7 @@ def next_question(window, question_label, progress_label, progress_canvas):
 
 def multi_choice_question(window, question_label, progress_label, progress_canvas):
     global answer, buttons
-    
+
     # 버튼 생성
     buttons = []
     for i in range(4):
@@ -97,7 +120,7 @@ def multi_choice_question(window, question_label, progress_label, progress_canva
     answer = random.randint(0, 3)
     cur_question = multi_choice[answer][new_key_name]
     question_label.config(text=cur_question)
-    
+
     # 버튼에 보기 할당
     for i in range(4):
         buttons[i].config(text=multi_choice[i][new_value_name], command=lambda idx=i: check_answer(idx, window, question_label, progress_label, progress_canvas))
@@ -108,7 +131,7 @@ def short_answer_question(window, question_label, progress_label, progress_canva
     # 문제 및 보기를 랜덤으로 선택
     random_question = random.choice(new_questions)
     cur_question = random_question[new_value_name]  # 영어 단어
-    answer = random_question[new_key_name]        # 한글 뜻
+    answer = random_question[new_key_name]          # 한글 뜻
     question_label.config(text=cur_question)
 
     # 입력 창 생성
@@ -132,6 +155,7 @@ def check_short_answer(window, question_label, progress_label, progress_canvas):
 
 def check_answer(idx, window, question_label, progress_label, progress_canvas):
     global correct_count, wrong_count
+ 
     if idx == answer:
         correct_count += 1
     else:
@@ -146,12 +170,19 @@ def update_progress(progress_canvas):
     progress_canvas.create_rectangle(0, 0, current_question / total_questions * 300, 20, fill="#2ECC71", outline="")
 
 def show_level():
-    global level
-    if correct_count >= 0 and correct_count <= 4:
-        level = "Iron"
-    elif correct_count >= 5 and correct_count <= 14:
-        level = "Bronze"
-    elif correct_count >= 15 and correct_count <= 20:
-        level = "Silver"
+    global level, current_user
 
+    user_data = load_user_data()
 
+    user = next((user for user in user_data if user['username'] == current_user), None)
+    if user:
+        if correct_count >= 0 and correct_count <= 4:
+            level = "Iron"
+        elif correct_count >= 5 and correct_count <= 14:
+            level = "Bronze"
+        elif correct_count >= 15 and correct_count <= 20:
+            level = "Silver"
+
+        user['level'] = level
+        with open('users.json', 'w', encoding='utf-8') as file:
+            json.dump(user_data, file, indent=4, ensure_ascii=False)

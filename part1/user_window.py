@@ -1,10 +1,10 @@
-# 유저 페이지
-
-
 import tkinter
 from tkinter import messagebox
 import json
 from word_window import open_wordlist_window
+
+# 현재 로그인된 사용자 정보를 저장할 전역 변수
+current_user = None
 
 def load_user_data(filepath='users.json'):
     try:
@@ -15,12 +15,14 @@ def load_user_data(filepath='users.json'):
     except json.JSONDecodeError:
         return []
 
-def open_login_window(window):
+def open_login_window():
     import login_window
-    login_window.open_login_window(window)  # 기존 인자를 그대로 전달
+    login_window.open_login_window()  # 로그인 창 열기
 
+def open_user_window(user):
+    global current_user
+    current_user = user
 
-def open_user_window():
     window = tkinter.Tk()
     window.title("TOEICVOCAMACA - 단어장 목록")
     window.geometry("400x500+100+100")
@@ -30,7 +32,7 @@ def open_user_window():
         confirm = messagebox.askokcancel("로그아웃", "정말 로그아웃 하시겠습니까?")
         if confirm:
             window.destroy()  # 현재 창 닫기
-            open_login_window(window)  # 로그인 창 열기
+            open_login_window()  # 로그인 창 열기
 
     def withdraw():
         confirm = messagebox.askokcancel("회원 탈퇴", "정말 회원 탈퇴하시겠습니까?")
@@ -43,7 +45,7 @@ def open_user_window():
 
             def check_password():
                 entered_password = password_entry.get()
-                username = username_entry.get()
+                username = current_user['username']  # 현재 로그인된 사용자명
                 user_data = load_user_data()
 
                 for user in user_data:
@@ -54,16 +56,10 @@ def open_user_window():
                         messagebox.showinfo("회원 탈퇴", "회원 탈퇴되었습니다.")
                         password_window.destroy()  # 비밀번호 확인 창 닫기
                         window.destroy()  # 현재 창 닫기
-                        open_login_window(window)  # 로그인 창 열기
+                        open_login_window()  # 로그인 창 열기
                         return
 
                 messagebox.showerror("회원 탈퇴", "아이디 또는 비밀번호가 일치하지 않습니다.")
-
-            username_label = tkinter.Label(password_window, text="아이디:")
-            username_label.pack()
-
-            username_entry = tkinter.Entry(password_window)
-            username_entry.pack()
 
             password_label = tkinter.Label(password_window, text="비밀번호:")
             password_label.pack()
@@ -77,7 +73,17 @@ def open_user_window():
     def open_word_page():
         window.destroy()
         open_wordlist_window()
-    
+
+    # 사용자 정보 표시 레이블 생성
+    user_info_frame = tkinter.Frame(window)
+    user_info_frame.pack(pady=20)
+
+    username_label = tkinter.Label(user_info_frame, text=f"아이디: {current_user['username']}", font=("Arial", 12))
+    username_label.pack()
+
+    level_label = tkinter.Label(user_info_frame, text=f"레벨: {current_user.get('level', 'N/A')}", font=("Arial", 12))
+    level_label.pack()
+
     word_list_button = tkinter.Button(window, text="단어장", width=8, height=12, command=open_wordlist_window)
     word_list_button.pack(side=tkinter.LEFT)
 

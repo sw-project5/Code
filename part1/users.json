@@ -28,5 +28,82 @@
         "password": "2",
         "birthday": "020202",
         "firstlogin": false
+    },
+    {
+        "username": "3",
+        "password": "3",
+        "birthday": "030303",
+        "firstlogin": false,
+        "level": "iron"
+    },
+    {
+        "username": "4",
+        "password": "4",
+        "birthday": "040404",
+        "firstlogin": false,
+        "level": "iron"
+    },
+    {
+        "username": "5",
+        "password": "5",
+        "birthday": "050505",
+        "firstlogin": false,
+        "level": "iron"
+    },
+    {
+        "username": "6",
+        "password": "6",
+        "birthday": "060606",
+        "firstlogin": false,
+        "level": "Iron"
+    },
+    {
+        "username": "7",
+        "password": "7",
+        "birthday": "070707",
+        "firstlogin": false,
+        "level": "Iron"
+    },
+    {
+        "username": "8",
+        "password": "8",
+        "birthday": "080808",
+        "firstlogin": false,
+        "level": "Iron"
+    },
+    {
+        "username": "9",
+        "password": "9",
+        "birthday": "090909",
+        "firstlogin": false,
+        "level": "Iron"
+    },
+    {
+        "username": "11",
+        "password": "11",
+        "birthday": "111111",
+        "firstlogin": false,
+        "level": "Bronze"
+    },
+    {
+        "username": "10",
+        "password": "10",
+        "birthday": "101010",
+        "firstlogin": false,
+        "level": "Bronze"
+    },
+    {
+        "username": "aaaa",
+        "password": "aaaa",
+        "birthday": "010101",
+        "firstlogin": false,
+        "level": "Iron"
+    },
+    {
+        "username": "bbbb",
+        "password": "bbbb",
+        "birthday": "010101",
+        "firstlogin": false,
+        "level": "Bronze"
     }
 ]

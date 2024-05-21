@@ -54,9 +54,9 @@ def open_login_window(window):
                 with open('users.json', 'w') as file:
                     json.dump(user_data, file, indent=4)
                 
-                open_level_test_window()  # 레벨 확인 테스트 함수 호출  
+                open_level_test_window(username)  # 레벨 확인 테스트 함수 호출  
             else:
-                open_user_window()
+                open_user_window(user)
         else:
             messagebox.showerror("로그인 실패", "잘못된 사용자 이름 또는 비밀번호입니다.")
 
