@@ -15,9 +15,10 @@ def load_user_data(filepath='users.json'):
     except json.JSONDecodeError:
         return []
 
-def open_login_window():
+def open_login_window(window):
     import login_window
-    login_window.open_login_window()  # 로그인 창 열기
+    login_window.open_login_window(window)  # 기존 인자를 그대로 전달
+
 
 def open_user_window(user):
     global current_user
@@ -28,12 +29,14 @@ def open_user_window(user):
     window.geometry("400x500+100+100")
     window.resizable(False, False)
 
+    # 로그아웃 기능
     def logout():
         confirm = messagebox.askokcancel("로그아웃", "정말 로그아웃 하시겠습니까?")
         if confirm:
             window.destroy()  # 현재 창 닫기
-            open_login_window()  # 로그인 창 열기
+            open_login_window(window)  # 로그인 창 열기
 
+    # 회원 탈퇴 기능
     def withdraw():
         confirm = messagebox.askokcancel("회원 탈퇴", "정말 회원 탈퇴하시겠습니까?")
         if confirm:
@@ -73,7 +76,7 @@ def open_user_window(user):
     def open_word_page():
         window.destroy()
         open_wordlist_window()
-
+    
     # 사용자 정보 표시 레이블 생성
     user_info_frame = tkinter.Frame(window)
     user_info_frame.pack(pady=20)
@@ -84,13 +87,17 @@ def open_user_window(user):
     level_label = tkinter.Label(user_info_frame, text=f"레벨: {current_user.get('level', 'N/A')}", font=("Arial", 12))
     level_label.pack()
 
-    word_list_button = tkinter.Button(window, text="단어장", width=8, height=12, command=open_wordlist_window)
-    word_list_button.pack(side=tkinter.LEFT)
+    word_list_button = tkinter.Button(window, text="단어장", width=8, height=10, command=open_wordlist_window)
+    word_list_button.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
+
+    test_button = tkinter.Button(window, text="테스트", width=8, height=10)  # command="테스트 페이지"
+    test_button.place(relx=0.7, rely=0.4, anchor=tkinter.CENTER)
 
     logout_button = tkinter.Button(window, text="로그아웃", command=logout)
-    logout_button.place(relx=0.5, rely=0.85, anchor=tkinter.CENTER)
+    logout_button.place(relx=0.5, rely=0.75, anchor=tkinter.CENTER)
 
     withdraw_button = tkinter.Button(window, text="회원 탈퇴", command=withdraw)
-    withdraw_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
+    withdraw_button.place(relx=0.5, rely=0.82, anchor=tkinter.CENTER)
 
     window.mainloop()
+

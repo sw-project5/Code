@@ -46,8 +46,8 @@ def join():
         "username": username,
         "password": password,
         "birthday": birthday,
-        'firstlogin':True,
-        'level':'iron'
+        "firstlogin": True,
+        "level":"iron"
     }
 
     # 사용자 데이터 추가
