@@ -17,14 +17,16 @@ class UserManager:
         with open(self.user_file, 'w') as file:
             json.dump(self.users, file, indent=4)
 
-    def add_user(self, username, password, birthdate):
+    def add_user(self, username, password, birthdate, firstlogin, level):
         if username in self.users:
             return False  # 이미 존재하는 사용자명인 경우 실패
 
         # 생년월일을 YYMMDD 형식으로 저장
         self.users[username] = {
             'password': password,
-            'birthdate': birthdate
+            'birthdate': birthdate,
+            'firstlogin': firstlogin,
+            'level':level
         }
         self.save_users()
         return True  # 회원가입 성공

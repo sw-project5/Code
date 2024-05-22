@@ -2,8 +2,8 @@ import tkinter
 from tkinter import messagebox
 import json
 from join_window import open_join_window
+from level_test_window import open_level_test_window
 from user_window import open_user_window
-
 def load_user_data(filepath='users.json'):
     try:
         with open(filepath, 'r', encoding='utf-8') as file:
@@ -16,11 +16,11 @@ def load_user_data(filepath='users.json'):
 def validate_login(username, password, user_data):
     for user in user_data:
         if user['username'] == username and user['password'] == password:
-            return True
+            return user
     return False
 
 def open_login_window(window):
-    login_window = tkinter.Tk()  # 새로운 Tk 객체를 생성하여 로그인 창을 만듭니다.
+    login_window = tkinter.Tk()
     login_window.title("로그인")
     login_window.geometry("400x300")
 
@@ -42,10 +42,21 @@ def open_login_window(window):
 
         user_data = load_user_data()
 
-        if validate_login(username, password, user_data):
+        user = validate_login(username, password, user_data)
+
+        if user:
             messagebox.showinfo("로그인 성공", "로그인에 성공했습니다.")
-            login_window.destroy()  # 기존 로그인 창을 파괴합니다.
-            open_user_window()  # 새로운 로그인 창을 열어줍니다.
+            login_window.destroy()
+
+            if user.get('firstlogin', True):
+                user['firstlogin'] = False
+                # 변경된 사용자 정보를 파일에 저장
+                with open('users.json', 'w') as file:
+                    json.dump(user_data, file, indent=4)
+                
+                open_level_test_window(username)  # 레벨 확인 테스트 함수 호출  
+            else:
+                open_user_window(user)
         else:
             messagebox.showerror("로그인 실패", "잘못된 사용자 이름 또는 비밀번호입니다.")
 
@@ -97,8 +108,3 @@ def open_login_window(window):
     close_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
 
     login_window.mainloop()
-
-# 코드 실행을 위한 테스트
-if __name__ == "__main__":
-    root = tkinter.Tk()
-    open_login_window(root)

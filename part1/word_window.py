@@ -65,6 +65,8 @@ def open_wordlist_window():
         close_button = tk.Button(root, text="닫기", command=root.destroy)
         close_button.pack(side="bottom", pady=10)
 
+        
+
     else:
         no_data_label = tk.Label(root, text="단어가 없습니다", anchor='w', justify='left')
         no_data_label.pack(pady=20)
