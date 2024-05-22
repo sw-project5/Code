@@ -20,10 +20,33 @@ answer = 0
 total_questions = 20  # 총 문제 수
 correct_count = 0  # 맞은 문제 수
 wrong_count = 0  # 틀린 문제 수
+level=0
+score=0
+print_score=0
+def get_level_from_score(score,print_score):
+    if 0 <= score <= 9:
+        level = "Iron"
+        print_score = score
+    elif 10 <= score <= 19:
+        level = "Bronze"
+        print_score = score-10
+    elif 20 <= score <= 29:
+        level = "Silver"
+        print_score = score-20
+    elif 30 <= score <= 39:
+        level = "Gold"
+        print_score = score-30
+    elif 40 <= score <= 49:
+        level = "Platinum"
+        print_score = score-40
+    elif score == 50:
+        score-=1
+        level = "Platinum"
+        print_score = score-40
 
 # 다음 문제를 생성하는 함수
 def next_question():
-    global answer, current_question, correct_count, wrong_count 
+    global answer, current_question, correct_count, wrong_count,score,print_score
 
     # 모든 문제를 다 풀었으면 종료
     if current_question == total_questions:
@@ -31,7 +54,7 @@ def next_question():
         print("틀린 문제 수:", wrong_count)
         for widget in window.winfo_children():
             widget.destroy()
-        
+        get_level_from_score(score,print_score)
         level_text = f"맞은 문제의 수: {correct_count} 입니다.\n레벨은 {level}입니다.\n점수는 {score}점입니다."
         if correct_count >= 15:
             result_text = "통과하였습니다."
