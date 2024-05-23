@@ -9,12 +9,11 @@ def open_description_window(window):
     description_window.geometry("400x500")
     description_window.resizable(0, 0)
 
-    font = tkinter.font.Font(family="맑은 고딕", size=14)
-
     title_label = tkinter.Label(description_window, text="TOEICVOCAMACA", width=20, height=2, font=("맑은 고딕", 24, "bold"))
     title_label.pack()
 
     messages = [
+        ("토익단어장", "안녕하세요! TOEICVOCAMACA 입니다!"),
         ("사용자", "안녕하세요!\n어떤 토익단어장인가요?"),
         ("토익단어장", "주 사용자인 대학생을 위해 토익 영단어를 쉽게 외울 수 있도록 토익 단어 및 학습 기능을 제공합니다!"),
         ("사용자", "다른 영단어장과의 차이점이 있나요?"),
@@ -26,10 +25,10 @@ def open_description_window(window):
     # 각 메시지에 대한 라벨 생성 및 배치
     for i, (sender, message) in enumerate(messages):
         if sender == "사용자":
-            label = tkinter.Label(description_window, text=message, font=font, anchor="w", wraplength=300, justify="right")
+            label = tkinter.Label(description_window, text=message, font=("맑은 고딕", 12), anchor="w", wraplength=300,bd=0, justify="right")
             label.place(relx=0.9, rely=0.2 + i * 0.1, anchor=tkinter.E)
         else:
-            label = tkinter.Label(description_window, text=message, font=font, anchor="e", wraplength=300, justify="left")
+            label = tkinter.Label(description_window, text=message, font=("맑은 고딕", 12), anchor="e", wraplength=300,bd=0, justify="left")
             label.place(relx=0.1, rely=0.2 + i * 0.1, anchor=tkinter.W)
 
     close_button = tkinter.Button(description_window, text="닫기", command=description_window.destroy)
