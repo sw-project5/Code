@@ -1,3 +1,6 @@
+
+
+
 def get_level_from_score(score):
     if 0 <= score <= 9:
         level = "Iron"
@@ -18,5 +21,3 @@ def get_level_from_score(score):
         score-=1
         level = "Platinum"
         print_score = score-40
-
-
