@@ -11,22 +11,14 @@ import pandas as pd
 import tkinter as tk
 from tkinter import messagebox
 
-# XLSX 파일을 JSON으로 변환하는 함수
-def xlsx_to_json(file_path, output_file):
-    df = pd.read_excel(file_path, engine='openpyxl')  # 엑셀 파일을 DataFrame으로 읽어오기
-    json_data = df.to_json(orient='records')  # DataFrame을 JSON 형식으로 변환
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(json_data)  # JSON 데이터를 파일로 저장
-
-# 단어 관리 클래스
 class WordManager:
-    def __init__(self, root):
+    def __init__(self, root, db_path):
         self.root = root
-        self.root.title("단어 관리자")  # 창 제목 설정
+        self.root.title("단어 관리자")
+        self.db_path = db_path
+        self.load_words_from_excel()
 
-        self.words = {}
-
-        # 단어와 정의 입력 필드 및 레이블
+        # UI 설정
         tk.Label(root, text="단어:").grid(row=0, column=0)
         self.word_entry = tk.Entry(root)
         self.word_entry.grid(row=0, column=1)
@@ -35,15 +27,26 @@ class WordManager:
         self.definition_entry = tk.Entry(root)
         self.definition_entry.grid(row=1, column=1)
 
-        # 단어 추가, 업데이트, 삭제 버튼
         tk.Button(root, text="단어 추가", command=self.add_word).grid(row=2, column=0)
         tk.Button(root, text="단어 업데이트", command=self.update_word).grid(row=2, column=1)
         tk.Button(root, text="단어 삭제", command=self.delete_word).grid(row=2, column=2)
 
-        # 단어 목록을 표시할 리스트 박스
         self.words_listbox = tk.Listbox(root, height=8, width=50)
         self.words_listbox.grid(row=3, column=0, columnspan=3)
         self.refresh_words_listbox()
+
+    def load_words_from_excel(self):
+        self.words = {}
+        try:
+            df = pd.read_excel(self.db_path, engine='openpyxl')
+            for index, row in df.iterrows():
+                self.words[row['단어']] = row['정의']
+        except FileNotFoundError:
+            messagebox.showinfo("경고", "단어장 파일을 찾을 수 없습니다.")
+    
+    def save_words_to_excel(self):
+        df = pd.DataFrame(list(self.words.items()), columns=['단어', '정의'])
+        df.to_excel(self.db_path, index=False, engine='openpyxl')
 
     def add_word(self):
         word = self.word_entry.get()
@@ -52,6 +55,7 @@ class WordManager:
             if word not in self.words:
                 self.words[word] = definition
                 self.refresh_words_listbox()
+                self.save_words_to_excel()
                 messagebox.showinfo("성공", "단어가 성공적으로 추가되었습니다.")
                 self.word_entry.delete(0, tk.END)
                 self.definition_entry.delete(0, tk.END)
@@ -66,6 +70,7 @@ class WordManager:
         if word in self.words:
             self.words[word] = definition
             self.refresh_words_listbox()
+            self.save_words_to_excel()
             self.word_entry.delete(0, tk.END)
             self.definition_entry.delete(0, tk.END)
         else:
@@ -76,6 +81,7 @@ class WordManager:
         if word in self.words:
             del self.words[word]
             self.refresh_words_listbox()
+            self.save_words_to_excel()
             self.word_entry.delete(0, tk.END)
             messagebox.showinfo("성공", "단어가 성공적으로 삭제되었습니다.")
         else:
@@ -86,13 +92,8 @@ class WordManager:
         for word, definition in self.words.items():
             self.words_listbox.insert(tk.END, f"{word}: {definition}")
 
-# 메인 실행 구문
 if __name__ == "__main__":
     root = tk.Tk()
-    app = WordManager(root)
-    # 예시 파일 경로와 출력 파일 경로 설정
-    input_file_path = 'db/단어장 파일.xlsx'
-    output_file_path = 'db/output_json.json'
-    # XLSX 파일을 JSON으로 변환하여 파일로 저장
-    xlsx_to_json(input_file_path, output_file_path)
+    db_path = 'db/단어장 파일.xlsx'
+    app = WordManager(root, db_path)
     root.mainloop()
