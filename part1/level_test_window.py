@@ -31,8 +31,8 @@ new_questions = [{new_key_name: key, new_value_name: value} for item in words fo
 
 # 색깔 상수들 정의
 BGCOLOR = "#FFFFFF"     # 배경색
-BTN_COLOR = "#F0F0F0"          # 버튼 배경색
-PROGRESS_COLOR = "#2ECC71"     # 진행 바 색
+BTN_COLOR = "#F0F0F0"   # 버튼 배경색
+PROGRESS_COLOR = "#2ECC71" # 진행 바 색
 
 # 정답 번호를 담을 변수 초기화
 answer = 0
@@ -46,7 +46,6 @@ current_user = None
 def open_level_test_window(username):
     global answer, current_question, correct_count, wrong_count, current_user
     
-
     # 변수 초기화
     current_user = username
     correct_count = 0
@@ -81,20 +80,17 @@ def open_level_test_window(username):
 
     # 초기 문제 생성
     next_question(level_test_window, question_label, progress_label, progress_canvas)    
+    return current_user
 
 def next_question(window, question_label, progress_label, progress_canvas):
     global answer, current_question, correct_count, wrong_count
+    user_data = load_user_data()
 
     # 모든 문제를 다 풀었으면 종료
     if current_question == total_questions:
         for widget in window.winfo_children():
             widget.destroy()
-        show_level()
-        level_text = f"맞은 문제 수: {correct_count}\n틀린 문제 수: {wrong_count}\n당신의 레벨은 '{level}'입니다.\n지금부터 우리와 함께 단어 학습을 시작하세요."
-        level_label = tk.Label(window, text=level_text, font=("맑은 고딕", 13), bg="#FFFFFF")
-        level_label.pack()
-        
-        open_user_window()
+        show_level(window, user_data)
         return
         
     # 홀수 번째 문제는 4지선다형, 짝수 번째 문제는 단답형으로 생성
@@ -173,10 +169,8 @@ def update_progress(progress_canvas):
     progress_canvas.delete("all")
     progress_canvas.create_rectangle(0, 0, current_question / total_questions * 300, 20, fill="#2ECC71", outline="")
 
-def show_level():
+def show_level(window, user_data):
     global level, current_user
-
-    user_data = load_user_data()
 
     user = next((user for user in user_data if user['username'] == current_user), None)
     if user:
@@ -190,3 +184,9 @@ def show_level():
         user['level'] = level
         with open('users.json', 'w', encoding='utf-8') as file:
             json.dump(user_data, file, indent=4, ensure_ascii=False)
+
+        level_text = f"맞은 문제 수: {correct_count}\n틀린 문제 수: {wrong_count}\n당신의 레벨은 '{level}'입니다.\n지금부터 우리와 함께 단어 학습을 시작하세요."
+        level_label = tk.Label(window, text=level_text, font=("맑은 고딕", 13), bg="#FFFFFF")
+        level_label.pack()
+        
+        window.after(3000, lambda: (window.destroy(), open_user_window(user)))

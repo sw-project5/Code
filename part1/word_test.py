@@ -42,6 +42,9 @@ def next_question():
         level_text = f"맞은 문제의 수: {correct_count} 입니다."
         level_label = Label(window, text=level_text, font=("HanSans", 13), bg=BGCOLOR)
         level_label.pack()
+        
+        reset_counts()  # 맞은 문제 수와 틀린 문제 수 초기화
+        
         return
 
     # 홀수 번째 문제는 4지선다형, 짝수 번째 문제는 단답형으로 생성
@@ -127,6 +130,12 @@ def increase_wrong_count():
     global wrong_count
     wrong_count += 1
 
+def reset_counts():
+    global correct_count, wrong_count, current_question
+    correct_count = 0
+    wrong_count = 0
+    current_question = 0
+
 def open_wordtest_window():
     global window, question_label, progress_label, progress_canvas, current_question
 
@@ -136,7 +145,7 @@ def open_wordtest_window():
     window.config(padx=30, pady=10, bg=BGCOLOR)
 
     # 사용자의 수준을 알아보기 위한 텍스트
-    level_text = Label(window, text="단어 테스트입니다.",
+    level_text = Label(window, text="사용자의 수준을 알아보기 위해 단어 테스트를 진행하겠습니다.",
                        font=("HanSans", 13), bg=BGCOLOR)
     level_text.pack()
 
@@ -160,3 +169,4 @@ def open_wordtest_window():
 
     # Tkinter 창 실행
     window.mainloop()
+
