@@ -43,12 +43,36 @@ wrong_count = 0  # 틀린 문제 수
 # 전역 변수로 사용자 이름 저장
 current_user = None
 
-def open_level_test_window(username):
+# 사용자 데이터 로드 및 업데이트
+def load_user_data(filepath='users.json'):
+    try:
+        with open(filepath, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        return []
+    
+def save_user_data(users, filepath='users.json'):
+    if not isinstance(users, list):
+        raise ValueError("The data to be saved must be a list.")
+    
+    with open(filepath, 'w', encoding='utf-8') as file:
+        json.dump(users, file, ensure_ascii=False, indent=4)
+
+def update_user_data(users, current_user, level, score):
+    for user in users:
+        if user["username"] == current_user["username"]:
+            user["level"] = level
+            user["score"] = score
+            break
+
+def open_level_test_window(user):
     global answer, current_question, correct_count, wrong_count, current_user
     
 
     # 변수 초기화
-    current_user = username
+    current_user = user
     correct_count = 0
     wrong_count = 0
     current_question = 0
@@ -80,21 +104,50 @@ def open_level_test_window(username):
     progress_canvas.pack()
 
     # 초기 문제 생성
-    next_question(level_test_window, question_label, progress_label, progress_canvas)    
+    next_question(level_test_window, question_label, progress_label, progress_canvas) 
+
+
+
+    
+
 
 def next_question(window, question_label, progress_label, progress_canvas):
-    global answer, current_question, correct_count, wrong_count
+    global answer, current_question, correct_count, wrong_count ,score, current_user, level
 
     # 모든 문제를 다 풀었으면 종료
     if current_question == total_questions:
         for widget in window.winfo_children():
             widget.destroy()
-        show_level()
+        
+        if correct_count >= 0 and correct_count <= 4:
+            level = "Iron"
+            score = 0
+        elif correct_count >= 5 and correct_count <= 14:
+            level = "Bronze"
+            score = 10
+        elif correct_count >= 15 and correct_count <= 20:
+            level = "Silver"
+            score = 20
+        
+        current_user['level'] = level
+        current_user['score'] = score
+
         level_text = f"맞은 문제 수: {correct_count}\n틀린 문제 수: {wrong_count}\n당신의 레벨은 '{level}'입니다.\n지금부터 우리와 함께 단어 학습을 시작하세요."
         level_label = tk.Label(window, text=level_text, font=("맑은 고딕", 13), bg="#FFFFFF")
         level_label.pack()
         
-        open_user_window()
+            # 유저 데이터 업데이트
+        users = load_user_data()
+        update_user_data(users, current_user, level, score)
+        
+        save_user_data(users)
+        
+
+        
+            
+        
+
+        #open_user_window(user)
         return
         
     # 홀수 번째 문제는 4지선다형, 짝수 번째 문제는 단답형으로 생성
@@ -173,20 +226,3 @@ def update_progress(progress_canvas):
     progress_canvas.delete("all")
     progress_canvas.create_rectangle(0, 0, current_question / total_questions * 300, 20, fill="#2ECC71", outline="")
 
-def show_level():
-    global level, current_user
-
-    user_data = load_user_data()
-
-    user = next((user for user in user_data if user['username'] == current_user), None)
-    if user:
-        if correct_count >= 0 and correct_count <= 4:
-            level = "Iron"
-        elif correct_count >= 5 and correct_count <= 14:
-            level = "Bronze"
-        elif correct_count >= 15 and correct_count <= 20:
-            level = "Silver"
-
-        user['level'] = level
-        with open('users.json', 'w', encoding='utf-8') as file:
-            json.dump(user_data, file, indent=4, ensure_ascii=False)

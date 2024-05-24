@@ -60,7 +60,7 @@ def open_user_window(user):
                         messagebox.showinfo("회원 탈퇴", "회원 탈퇴되었습니다.")
                         password_window.destroy()  # 비밀번호 확인 창 닫기
                         window.destroy()  # 현재 창 닫기
-                        open_login_window()  # 로그인 창 열기
+                        open_login_window(window)  # 로그인 창 열기
                         return
 
                 messagebox.showerror("회원 탈퇴", "아이디 또는 비밀번호가 일치하지 않습니다.")
