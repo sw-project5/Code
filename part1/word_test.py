@@ -136,7 +136,7 @@ def open_wordtest_window():
     window.config(padx=30, pady=10, bg=BGCOLOR)
 
     # 사용자의 수준을 알아보기 위한 텍스트
-    level_text = Label(window, text="사용자의 수준을 알아보기 위해 레벨 테스트를 진행하겠습니다.",
+    level_text = Label(window, text="단어 테스트입니다.",
                        font=("HanSans", 13), bg=BGCOLOR)
     level_text.pack()
 
