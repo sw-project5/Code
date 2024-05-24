@@ -4,17 +4,19 @@ def get_level_from_score(score):
         print_score = score
     elif 10 <= score <= 19:
         level = "Bronze"
-        print_score = score-10
+        print_score = score - 10
     elif 20 <= score <= 29:
         level = "Silver"
-        print_score = score-20
+        print_score = score - 20
     elif 30 <= score <= 39:
         level = "Gold"
-        print_score = score-30
+        print_score = score - 30
     elif 40 <= score <= 49:
         level = "Platinum"
-        print_score = score-40
+        print_score = score - 40
     elif score == 50:
-        score-=1
+        score -= 1  # 점수가 50일 때는 레벨 Platinum이므로 score를 감소시킴
         level = "Platinum"
-        print_score = score-40
+        print_score = score - 40
+
+    return level, print_score

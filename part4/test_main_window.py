@@ -3,6 +3,18 @@ import tkinter
 from tkinter import *
 from word_test import open_wordtest_window
 from level_test import open_wordleveltest_window
+import json
+
+def load_user_data(filepath='users.json'):
+    try:
+        with open(filepath, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        return []
+    
+    
 
 
 def open_test_window(user):
