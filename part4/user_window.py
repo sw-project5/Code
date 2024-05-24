@@ -91,7 +91,7 @@ def open_user_window(user):
     word_list_button = tkinter.Button(window, text="단어장", width=8, height=10, command=open_wordlist_window)
     word_list_button.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
 
-    test_button = tkinter.Button(window, text="테스트", width=8, height=10, command=open_test_window)  # command="테스트 페이지"
+    test_button = tkinter.Button(window, text="테스트", width=8, height=10, command=lambda:open_test_window(user))  # command="테스트 페이지"
     test_button.place(relx=0.7, rely=0.4, anchor=tkinter.CENTER)
 
     logout_button = tkinter.Button(window, text="로그아웃", command=logout)

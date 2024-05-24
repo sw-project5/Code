@@ -3,21 +3,9 @@ import tkinter
 from tkinter import *
 from word_test import open_wordtest_window
 from level_test import open_wordleveltest_window
-import json
-
-def load_user_data(filepath='users.json'):
-    try:
-        with open(filepath, 'r', encoding='utf-8') as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return []
-    except json.JSONDecodeError:
-        return []
-    
-    
 
 
-def open_test_window():
+def open_test_window(user):
     test_window = tkinter.Tk()
     test_window.title("테스트")
     test_window.geometry("400x500+100+100")
@@ -29,7 +17,7 @@ def open_test_window():
     wordtest_button = tkinter.Button(test_window, text="단어테스트", width=8, height=10, command=open_wordtest_window)
     wordtest_button.place(relx=0.3, rely=0.5, anchor=tkinter.CENTER)
 
-    wordleveltest_button = tkinter.Button(test_window, text="레벨테스트", width=8, height=10, command=open_wordleveltest_window)
+    wordleveltest_button = tkinter.Button(test_window, text="레벨테스트", width=8, height=10, command=lambda:open_wordleveltest_window(user))
     wordleveltest_button.place(relx=0.7, rely=0.5, anchor=tkinter.CENTER)
 
     close_button = tkinter.Button(test_window, text="닫기", command=test_window.destroy)

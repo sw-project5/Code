@@ -54,7 +54,8 @@ def open_login_window(window):
                 with open('users.json', 'w') as file:
                     json.dump(user_data, file, indent=4)
                 
-                open_level_test_window(username)  # 레벨 확인 테스트 함수 호출  
+                open_level_test_window(username)  # 레벨 확인 테스트 함수 호출 
+                open_user_window(user)
             else:
                 open_user_window(user)
         else:
