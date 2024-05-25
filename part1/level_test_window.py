@@ -1,3 +1,4 @@
+
 import tkinter as tk
 from tkinter import messagebox
 from wordDB import words
@@ -170,18 +171,22 @@ def update_progress(progress_canvas):
     progress_canvas.create_rectangle(0, 0, current_question / total_questions * 300, 20, fill="#2ECC71", outline="")
 
 def show_level(window, user_data):
-    global level, current_user
+    global level, current_user ,score
 
     user = next((user for user in user_data if user['username'] == current_user), None)
     if user:
         if correct_count >= 0 and correct_count <= 4:
             level = "Iron"
+            score=0
         elif correct_count >= 5 and correct_count <= 14:
             level = "Bronze"
+            score=10
         elif correct_count >= 15 and correct_count <= 20:
             level = "Silver"
+            score=20
 
         user['level'] = level
+        user['score'] = score
         with open('users.json', 'w', encoding='utf-8') as file:
             json.dump(user_data, file, indent=4, ensure_ascii=False)
 
@@ -190,4 +195,3 @@ def show_level(window, user_data):
         level_label.pack()
         
         window.after(3000, lambda: (window.destroy(), open_user_window(user)))
-

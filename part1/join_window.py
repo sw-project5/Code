@@ -11,6 +11,7 @@ def join():
     password = password_entry.get()
     confirm_password = confirm_password_entry.get()
     birthday = birthday_entry.get()
+    
 
     # 필수 필드가 비어 있는지 확인
     if not (username and password and confirm_password and birthday):
@@ -47,7 +48,8 @@ def join():
         "password": password,
         "birthday": birthday,
         "firstlogin": True,
-        "level":"iron"
+        "level":"iron",
+        "score" : 0
     }
 
     # 사용자 데이터 추가

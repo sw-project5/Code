@@ -4,6 +4,8 @@ import json
 from join_window import open_join_window
 from level_test_window import open_level_test_window
 from user_window import open_user_window
+from manager_window import open_manager_window
+
 def load_user_data(filepath='users.json'):
     try:
         with open(filepath, 'r', encoding='utf-8') as file:
@@ -45,7 +47,7 @@ def open_login_window(window):
         user = validate_login(username, password, user_data)
 
         if user:
-            messagebox.showinfo("로그인 성공", "로그인에 성공했습니다.")
+            
             login_window.destroy()
 
             if user.get('firstlogin', True):
@@ -53,9 +55,15 @@ def open_login_window(window):
                 # 변경된 사용자 정보를 파일에 저장
                 with open('users.json', 'w') as file:
                     json.dump(user_data, file, indent=4)
-                
+                messagebox.showinfo("첫 로그인 성공", "레벨 확인 테스트로 이동합니다.")
                 open_level_test_window(username)  # 레벨 확인 테스트 함수 호출  
+
+            elif user.get('level')=="admin":
+                messagebox.showinfo("관리자 로그인 성공","관리자님 환영합니다.")
+                open_manager_window()
+            
             else:
+                messagebox.showinfo("로그인 성공", "로그인에 성공했습니다.")
                 open_user_window(user)
         else:
             messagebox.showerror("로그인 실패", "잘못된 사용자 이름 또는 비밀번호입니다.")

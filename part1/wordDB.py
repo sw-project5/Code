@@ -315,9 +315,6 @@ words = [
         "delegate": "(권한등을)위임하다. 대표"
     },
     {
-        "attentively": "주의 깊게, 조심스럽게"
-    },
-    {
         "supervision": "감독"
     },
     {

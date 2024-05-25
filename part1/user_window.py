@@ -2,6 +2,7 @@ import tkinter
 from tkinter import messagebox
 import json
 from word_window import open_wordlist_window
+from test_main_window import open_test_window
 
 # 현재 로그인된 사용자 정보를 저장할 전역 변수
 current_user = None
@@ -90,7 +91,7 @@ def open_user_window(user):
     word_list_button = tkinter.Button(window, text="단어장", width=8, height=10, command=open_wordlist_window)
     word_list_button.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
 
-    test_button = tkinter.Button(window, text="테스트", width=8, height=10)  # command="테스트 페이지"
+    test_button = tkinter.Button(window, text="테스트", width=8, height=10, command=lambda: open_test_window(user))  # command="테스트 페이지"
     test_button.place(relx=0.7, rely=0.4, anchor=tkinter.CENTER)
 
     logout_button = tkinter.Button(window, text="로그아웃", command=logout)

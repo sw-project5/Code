@@ -1,37 +1,53 @@
 [
     {
-        "username": "park",
-        "password": "1234",
-        "birthday": "021022",
-        "firstlogin": false,
-        "level": "Iron"
-    },
-    {
-        "username": "a",
-        "password": "a",
+        "username": "han",
+        "password": "41",
         "birthday": "010101",
         "firstlogin": false,
-        "level": "Iron"
+        "level": "admin"
+    },
+    {
+        "username": "seo",
+        "password": "2",
+        "birthday": "020202",
+        "firstlogin": false,
+        "level": "admin"
+    },
+    {
+        "username": "kwon",
+        "password": "3",
+        "birthday": "030303",
+        "firstlogin": false,
+        "level": "admin"
+    },
+    {
+        "username": "choi",
+        "password": "4",
+        "birthday": "040404",
+        "firstlogin": false,
+        "level": "admin"
+    },
+    {
+        "username": "park",
+        "password": "5",
+        "birthday": "050505",
+        "firstlogin": false,
+        "level": "admin"
     },
     {
         "username": "1",
         "password": "1",
-        "birthday": "111111",
+        "birthday": "010101",
         "firstlogin": false,
-        "level": "Iron"
+        "level": "Gold",
+        "score": 30
     },
     {
         "username": "2",
         "password": "2",
         "birthday": "020202",
         "firstlogin": false,
-        "level": "Iron"
-    },
-    {
-        "username": "3",
-        "password": "3",
-        "birthday": "030303",
-        "firstlogin": false,
-        "level": "Iron"
+        "level": "Iron",
+        "score": 0
     }
 ]
