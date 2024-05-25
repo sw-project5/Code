@@ -55,7 +55,8 @@ def open_level_test_window(username):
 
     level_test_window = tk.Tk()
     level_test_window.title("영어 퀴즈")
-    level_test_window.config(padx=30, pady=10, bg="#FFFFFF")
+    level_test_window.geometry("600x500+100+100")
+    level_test_window.resizable(False, False)
 
     # 테스트 결과 맨 위로 올라오게 하기
     level_test_window.attributes("-topmost", True)
@@ -63,20 +64,20 @@ def open_level_test_window(username):
 
     # 사용자의 수준을 알아보기 위한 텍스트
     level_text = tk.Label(level_test_window, text="사용자의 수준을 알아보기 위해 레벨 테스트를 진행하겠습니다.",
-                    font=("맑은 고딕", 13), bg=BGCOLOR)
+                    font=("맑은 고딕", 13))
     level_text.pack()
 
     # 문제 표시 레이블 생성
-    question_label = tk.Label(level_test_window, width=30, height=4, text="test", font=("맑은 고딕", 20, "bold"), bg="#FFFFFF", fg="black")
+    question_label = tk.Label(level_test_window, width=30, height=4, text="test", font=("맑은 고딕", 20, "bold"), fg="black")
     question_label.pack()
 
     # 진행 상황 표시 레이블 생성
     current_question = 0
-    progress_label = tk.Label(level_test_window, text=f"{current_question}/{total_questions}", font=("맑은 고딕", 12), bg="#FFFFFF")
+    progress_label = tk.Label(level_test_window, text=f"{current_question}/{total_questions}", font=("맑은 고딕", 12))
     progress_label.pack()
 
     # 진행 상황 바 생성
-    progress_canvas = tk.Canvas(level_test_window, width=300, height=20, bg="#FFFFFF", highlightthickness=0)
+    progress_canvas = tk.Canvas(level_test_window, width=300, height=20, highlightthickness=0)
     progress_canvas.pack()
 
     # 초기 문제 생성
@@ -192,7 +193,7 @@ def show_level(window, user_data):
             json.dump(user_data, file, indent=4, ensure_ascii=False)
 
         level_text = f"맞은 문제 수: {correct_count}\n틀린 문제 수: {wrong_count}\n당신의 레벨은 '{level}'입니다.\n지금부터 우리와 함께 단어 학습을 시작하세요."
-        level_label = tk.Label(window, text=level_text, font=("맑은 고딕", 13), bg="#FFFFFF")
+        level_label = tk.Label(window, text=level_text, font=("맑은 고딕", 13))
         level_label.pack()
         
         window.after(3000, lambda: (window.destroy(), open_user_window(user)))
