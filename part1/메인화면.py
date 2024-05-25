@@ -2,7 +2,9 @@ import tkinter
 import tkinter.font
 from login_window import open_login_window
 from word_description_window import open_description_window
-
+# title_wine
+# bgColor="#FFDFB9"
+# fgColor="#A4193D"
 window = tkinter.Tk()
 
 window.title("TOEICVOCAMACA")

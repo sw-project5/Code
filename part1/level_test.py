@@ -1,4 +1,5 @@
 from tkinter import *
+import tkinter
 import random
 import json
 from wordDB import words  # 단어 데이터베이스 임포트
@@ -12,7 +13,6 @@ new_value_name = "korean_meaning"
 new_questions = [{new_key_name: key, new_value_name: value} for item in words for key, value in item.items()]
 
 # 색깔 상수들 정의
-BGCOLOR = "#FFFFFF"     # 배경색
 BTN_COLOR = "#F0F0F0"   # 버튼 배경색
 PROGRESS_COLOR = "#2ECC71"  # 진행 바 색
 
@@ -67,25 +67,26 @@ def open_wordleveltest_window(user):
     # Tkinter 창 생성
     window = Tk()
     window.title("영어 퀴즈")
-    window.config(padx=30, pady=10, bg=BGCOLOR)
+    window.geometry("600x500+100+100")
+    window.resizable(False, False)
 
     # 사용자의 수준을 알아보기 위한 텍스트
     level_text = Label(window, text="사용자의 수준을 알아보기 위해 레벨 테스트를 진행하겠습니다.",
-                       font=("HanSans", 13), bg=BGCOLOR)
+                       font=("맑은 고딕", 13))
     level_text.pack()
 
     # 문제 표시 레이블 생성
     question_label = Label(window, width=30, height=4,
-                           text="test", font=("HanSans", 20, "bold"), bg=BGCOLOR, fg="black")
+                           text="test", font=("맑은 고딕", 20, "bold"), fg="black")
     question_label.pack()
 
     # 진행 상황 표시 레이블 생성
     progress_label = Label(window, text=f"{current_question}/{total_questions}",
-                           font=("HanSans", 12), bg=BGCOLOR)
+                           font=("맑은 고딕", 12))
     progress_label.pack()
 
     # 진행 상황 바 생성
-    progress_canvas = Canvas(window, width=300, height=20, bg=BGCOLOR, highlightthickness=0)
+    progress_canvas = Canvas(window, width=300, height=15, highlightthickness=0)
     progress_canvas.pack()
 
     # 초기 문제 생성
@@ -93,6 +94,20 @@ def open_wordleveltest_window(user):
 
     # Tkinter 창 실행
     window.mainloop()
+
+def wrap_text(text, line_length):
+    words = text.split()
+    lines = []
+    current_line = ""
+    for word in words:
+        if len(current_line) + len(word) + 1 <= line_length:
+            current_line += (word + " ")
+        else:
+            lines.append(current_line.strip())
+            current_line = word + " "
+    if current_line:
+        lines.append(current_line.strip())
+    return "\n".join(lines)
 
 def next_question():
     global answer, current_question, correct_count, wrong_count, score, level
@@ -118,10 +133,15 @@ def next_question():
         current_user["score"] = score
 
         level_text = f"맞은 문제의 수: {correct_count} 입니다.\n레벨은 {level}입니다.\n점수는 {print_score}점입니다."
-        level_label = Label(window, text=level_text, font=("HanSans", 13), bg=BGCOLOR)
-        level_label.pack()
-        result_label = Label(window, text=result_text, font=("HanSans", 13), bg=BGCOLOR)
-        result_label.pack()
+        level_label = Label(window, text=level_text, font=("맑은 고딕", 20))
+        level_label.place(relx=0.5, rely=0.4, anchor=tkinter.CENTER)
+
+        result_label = Label(window, text=result_text, font=("맑은 고딕", 20))
+        result_label.place(relx=0.5, rely=0.6, anchor=tkinter.CENTER)
+
+        close_button = tkinter.Button(window, text="닫기", command=window.destroy)
+        close_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
+
         
         # 유저 데이터 업데이트
         users = load_user_data()
@@ -145,9 +165,9 @@ def multi_choice_question():
 
     buttons = []
     for i in range(4):
-        btn = Button(window, text=f"{i+1}번", width=35, height=2,
+        btn = Button(window, text=f"{i+1}번", width=35, height=3,
                      command=lambda idx=i: check_answer(idx),
-                     font=("HanSans", 15, "bold"), bg=BTN_COLOR)
+                     font=("맑은 고딕", 10, "bold"), bg=BTN_COLOR)
         btn.pack()
         buttons.append(btn)
 
@@ -157,7 +177,8 @@ def multi_choice_question():
     question_label.config(text=cur_question)
 
     for i in range(4):
-        buttons[i].config(text=multi_choice[i][new_value_name], command=lambda idx=i: check_answer(idx))
+        wrapped_text = wrap_text(multi_choice[i][new_value_name], 20)  # 텍스트를 20자로 줄바꿈
+        buttons[i].config(text=wrapped_text, command=lambda idx=i: check_answer(idx))
 
 def short_answer_question():
     global answer, entry, check_btn
@@ -167,11 +188,11 @@ def short_answer_question():
     answer = random_question[new_key_name]
     question_label.config(text=cur_question)
 
-    entry = Entry(window, font=("HanSans", 12), width=30)
+    entry = Entry(window, font=("맑은 고딕", 12), width=30)
     entry.pack()
 
     check_btn = Button(window, text="확인", width=15, height=2,
-                       command=check_short_answer, font=("HanSans", 15, "bold"), bg=BTN_COLOR)
+                       command=check_short_answer, font=("맑은 고딕", 15, "bold"), bg=BTN_COLOR)
     check_btn.pack()
 
 def check_short_answer():
@@ -207,3 +228,5 @@ def restart_test():
     wrong_count = 0
     current_question = 0
     print_score = 0
+
+
