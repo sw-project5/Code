@@ -20,9 +20,8 @@ def open_login_window(window):
     import login_window
     login_window.open_login_window(window)  # 기존 인자를 그대로 전달
 
-
 def open_user_window(user):
-    global current_user
+    global current_user, username_label, level_label
     current_user = user
 
     window = tkinter.Tk()
@@ -77,7 +76,16 @@ def open_user_window(user):
     def open_word_page():
         window.destroy()
         open_wordlist_window()
-    
+
+    def refresh_user_info():
+        user_data = load_user_data()
+        for user in user_data:
+            if user['username'] == current_user['username']:
+                current_user.update(user)
+                username_label.config(text=f"아이디: {current_user['username']}")
+                level_label.config(text=f"레벨: {current_user.get('level', 'N/A')}")
+                break
+
     # 사용자 정보 표시 레이블 생성
     user_info_frame = tkinter.Frame(window)
     user_info_frame.pack(pady=20)
@@ -100,5 +108,7 @@ def open_user_window(user):
     withdraw_button = tkinter.Button(window, text="회원 탈퇴", command=withdraw)
     withdraw_button.place(relx=0.5, rely=0.82, anchor=tkinter.CENTER)
 
-    window.mainloop()
+    refresh_button = tkinter.Button(window, text="새로 고침", command=refresh_user_info)
+    refresh_button.place(relx=0.5, rely=0.89, anchor=tkinter.CENTER)
 
+    window.mainloop()
