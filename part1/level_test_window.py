@@ -54,7 +54,7 @@ def open_level_test_window(username):
 
     level_test_window = tk.Tk()
     level_test_window.title("영어 퀴즈")
-    level_test_window.geometry("600x500+100+100")
+    level_test_window.geometry("450x500+100+100")
     level_test_window.resizable(False, False)
 
     # 테스트 결과 맨 위로 올라오게 하기
@@ -114,7 +114,8 @@ def multi_choice_question(window, question_label, progress_label, progress_canva
     buttons = []
     for i in range(4):
         btn = tk.Button(window, text=f"{i+1}번", width=35, height=3, 
-                        command=lambda idx=i: check_answer(idx, window, question_label, progress_label, progress_canvas), font=("맑은 고딕", 15, "bold"), bg="#F0F0F0")
+                        command=lambda idx=i: check_answer(idx, window, question_label, progress_label, progress_canvas), 
+                        font=("맑은 고딕", 13, "bold"), bg="#F0F0F0")
         btn.pack()
         buttons.append(btn)
     # 문제 및 보기를 랜덤으로 선택

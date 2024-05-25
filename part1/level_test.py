@@ -67,7 +67,7 @@ def open_wordleveltest_window(user):
     # Tkinter 창 생성
     window = Tk()
     window.title("영어 퀴즈")
-    window.geometry("600x500+100+100")
+    window.geometry("450x500+100+100")
     window.resizable(False, False)
 
     # 사용자의 수준을 알아보기 위한 텍스트
@@ -153,7 +153,7 @@ def multi_choice_question():
     for i in range(4):
         btn = Button(window, text=f"{i+1}번", width=35, height=3,
                      command=lambda idx=i: check_answer(idx),
-                     font=("맑은 고딕", 15, "bold"), bg=BTN_COLOR)
+                     font=("맑은 고딕", 13, "bold"), bg=BTN_COLOR)
         btn.pack()
         buttons.append(btn)
 

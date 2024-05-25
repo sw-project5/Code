@@ -41,5 +41,13 @@
         "firstlogin": false,
         "level": "Iron",
         "score": 0
+    },
+    {
+        "username": "2",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": false,
+        "level": "Iron",
+        "score": 1
     }
 ]
