@@ -76,32 +76,32 @@ def save_words_to_file(words, file_path='wordDB.py'):
         file.write("words = ")
         json.dump(words_data["words"], file, ensure_ascii=False, indent=4)
 
-def main():
-    root = tk.Tk()
-    root.title("Word Manager")
-    root.geometry("450x500+100+100")
-    root.resizable(False, False)
+def open_manager_window():
+    manager_window = tk.Tk()
+    manager_window.title("Word Manager")
+    manager_window.geometry("450x500+100+100")
+    manager_window.resizable(False, False)
 
     # 초기 단어 데이터
     words = wordDB.words
 
     # 단어 목록 표시
-    word_listbox = tk.Listbox(root, height=10, width=50)
+    word_listbox = tk.Listbox(manager_window, height=10, width=50)
     word_listbox.grid(row=0, column=0, columnspan=3)
 
     # 초기 단어 목록 업데이트
     update_word_listbox(words, word_listbox)
 
     # 단어 추가/수정/삭제를 위한 엔트리와 버튼
-    tk.Label(root, text="Word:").grid(row=1, column=0)
-    word_entry = tk.Entry(root)
+    tk.Label(manager_window, text="Word:").grid(row=1, column=0)
+    word_entry = tk.Entry(manager_window)
     word_entry.grid(row=1, column=1, columnspan=2)
 
-    tk.Label(root, text="Meaning:").grid(row=2, column=0)
-    meaning_entry = tk.Entry(root)
+    tk.Label(manager_window, text="Meaning:").grid(row=2, column=0)
+    meaning_entry = tk.Entry(manager_window)
     meaning_entry.grid(row=2, column=1, columnspan=2)
 
-    button_frame = tk.Frame(root)
+    button_frame = tk.Frame(manager_window)
     button_frame.grid(row=3, column=0, columnspan=3)
 
     add_button = tk.Button(button_frame, text="Add", command=lambda: add_word(words, word_entry, meaning_entry, word_listbox))
@@ -114,10 +114,10 @@ def main():
     delete_button.grid(row=0, column=2)
 
     # 완료 버튼을 추가합니다
-    complete_button = tk.Button(root, text="Complete", command=lambda: save_words_to_file(words))
+    complete_button = tk.Button(manager_window, text="Complete", command=lambda: save_words_to_file(words))
     complete_button.grid(row=4, column=0, columnspan=3)
 
-    root.mainloop()
+    manager_window.mainloop()
 
 if __name__ == "__main__":
-    main()
+    open_manager_window()

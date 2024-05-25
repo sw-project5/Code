@@ -20,9 +20,8 @@ def open_login_window(window):
     import login_window
     login_window.open_login_window(window)  # 기존 인자를 그대로 전달
 
-
 def open_user_window(user):
-    global current_user
+    global current_user, username_label, level_label
     current_user = user
 
     window = tkinter.Tk()
@@ -77,21 +76,30 @@ def open_user_window(user):
     def open_word_page():
         window.destroy()
         open_wordlist_window()
-    
+
+    def refresh_user_info():
+        user_data = load_user_data()
+        for user in user_data:
+            if user['username'] == current_user['username']:
+                current_user.update(user)
+                username_label.config(text=f"아이디: {current_user['username']}")
+                level_label.config(text=f"레벨: {current_user.get('level', 'N/A')}")
+                break
+
     # 사용자 정보 표시 레이블 생성
     user_info_frame = tkinter.Frame(window)
     user_info_frame.pack(pady=20)
 
-    username_label = tkinter.Label(user_info_frame, text=f"아이디: {current_user['username']}", font=("Arial", 12))
+    username_label = tkinter.Label(user_info_frame, text=f"아이디: {current_user['username']}", font=("맑은 고딕", 12))
     username_label.pack()
 
-    level_label = tkinter.Label(user_info_frame, text=f"레벨: {current_user.get('level', 'N/A')}", font=("Arial", 12))
+    level_label = tkinter.Label(user_info_frame, text=f"레벨: {current_user.get('level', 'N/A')}", font=("맑은 고딕", 12))
     level_label.pack()
 
     word_list_button = tkinter.Button(window, text="단어장", width=8, height=10, command=open_wordlist_window)
     word_list_button.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
 
-    test_button = tkinter.Button(window, text="테스트", width=8, height=10, command=open_test_window)  # command="테스트 페이지"
+    test_button = tkinter.Button(window, text="테스트", width=8, height=10, command=lambda: open_test_window(user))  # command="테스트 페이지"
     test_button.place(relx=0.7, rely=0.4, anchor=tkinter.CENTER)
 
     logout_button = tkinter.Button(window, text="로그아웃", command=logout)
@@ -100,5 +108,7 @@ def open_user_window(user):
     withdraw_button = tkinter.Button(window, text="회원 탈퇴", command=withdraw)
     withdraw_button.place(relx=0.5, rely=0.82, anchor=tkinter.CENTER)
 
-    window.mainloop()
+    refresh_button = tkinter.Button(window, text="새로 고침", command=refresh_user_info)
+    refresh_button.place(relx=0.5, rely=0.89, anchor=tkinter.CENTER)
 
+    window.mainloop()

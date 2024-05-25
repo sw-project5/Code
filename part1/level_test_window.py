@@ -1,3 +1,4 @@
+
 import tkinter as tk
 from tkinter import messagebox
 from wordDB import words
@@ -112,7 +113,8 @@ def multi_choice_question(window, question_label, progress_label, progress_canva
     # 버튼 생성
     buttons = []
     for i in range(4):
-        btn = tk.Button(window, text=f"{i+1}번", width=35, height=2, command=lambda idx=i: check_answer(idx, window, question_label, progress_label, progress_canvas), font=("맑은 고딕", 15, "bold"), bg="#F0F0F0")
+        btn = tk.Button(window, text=f"{i+1}번", width=35, height=3, 
+                        command=lambda idx=i: check_answer(idx, window, question_label, progress_label, progress_canvas), font=("맑은 고딕", 15, "bold"), bg="#F0F0F0")
         btn.pack()
         buttons.append(btn)
     # 문제 및 보기를 랜덤으로 선택
@@ -170,18 +172,22 @@ def update_progress(progress_canvas):
     progress_canvas.create_rectangle(0, 0, current_question / total_questions * 300, 20, fill="#2ECC71", outline="")
 
 def show_level(window, user_data):
-    global level, current_user
+    global level, current_user ,score
 
     user = next((user for user in user_data if user['username'] == current_user), None)
     if user:
         if correct_count >= 0 and correct_count <= 4:
             level = "Iron"
+            score=0
         elif correct_count >= 5 and correct_count <= 14:
             level = "Bronze"
+            score=10
         elif correct_count >= 15 and correct_count <= 20:
             level = "Silver"
+            score=20
 
         user['level'] = level
+        user['score'] = score
         with open('users.json', 'w', encoding='utf-8') as file:
             json.dump(user_data, file, indent=4, ensure_ascii=False)
 

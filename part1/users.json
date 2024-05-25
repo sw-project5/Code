@@ -1,0 +1,45 @@
+[
+    {
+        "username": "han",
+        "password": "41",
+        "birthday": "010101",
+        "firstlogin": false,
+        "level": "admin"
+    },
+    {
+        "username": "seo",
+        "password": "2",
+        "birthday": "020202",
+        "firstlogin": false,
+        "level": "admin"
+    },
+    {
+        "username": "kwon",
+        "password": "3",
+        "birthday": "030303",
+        "firstlogin": false,
+        "level": "admin"
+    },
+    {
+        "username": "choi",
+        "password": "4",
+        "birthday": "040404",
+        "firstlogin": false,
+        "level": "admin"
+    },
+    {
+        "username": "park",
+        "password": "5",
+        "birthday": "050505",
+        "firstlogin": false,
+        "level": "admin"
+    },
+    {
+        "username": "k",
+        "password": "1",
+        "birthday": "111111",
+        "firstlogin": false,
+        "level": "Silver",
+        "score": 20
+    }
+]
