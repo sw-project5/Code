@@ -105,7 +105,7 @@ def next_question():
         for widget in window.winfo_children():
             widget.destroy()
         
-        if correct_count >= 1:
+        if correct_count >= 15:
             result_text = "통과하였습니다."
             score = current_user.get("score", 0)
             score += 1
