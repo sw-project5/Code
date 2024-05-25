@@ -1,4 +1,3 @@
-
 import tkinter as tk
 from tkinter import messagebox
 from wordDB import words
@@ -193,7 +192,7 @@ def show_level(window, user_data):
             json.dump(user_data, file, indent=4, ensure_ascii=False)
 
         level_text = f"맞은 문제 수: {correct_count}\n틀린 문제 수: {wrong_count}\n당신의 레벨은 '{level}'입니다.\n지금부터 우리와 함께 단어 학습을 시작하세요."
-        level_label = tk.Label(window, text=level_text, font=("맑은 고딕", 13))
-        level_label.pack()
+        level_label = tk.Label(window, text=level_text, font=("맑은 고딕", 20))
+        level_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         
         window.after(3000, lambda: (window.destroy(), open_user_window(user)))

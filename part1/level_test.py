@@ -13,7 +13,6 @@ new_value_name = "korean_meaning"
 new_questions = [{new_key_name: key, new_value_name: value} for item in words for key, value in item.items()]
 
 # 색깔 상수들 정의
-BGCOLOR = "#FFFFFF"     # 배경색
 BTN_COLOR = "#F0F0F0"   # 버튼 배경색
 PROGRESS_COLOR = "#2ECC71"  # 진행 바 색
 

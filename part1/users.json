@@ -35,19 +35,11 @@
         "level": "admin"
     },
     {
-        "username": "k",
+        "username": "1",
         "password": "1",
         "birthday": "111111",
         "firstlogin": false,
-        "level": "Silver",
-        "score": 20
-    },
-    {
-        "username": "2",
-        "password": "2",
-        "birthday": "211111",
-        "firstlogin": false,
-        "level": "iron",
+        "level": "Iron",
         "score": 0
     }
 ]
