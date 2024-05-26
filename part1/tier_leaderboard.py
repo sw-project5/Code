@@ -1,6 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
 import json
+import customtkinter 
+from customtkinter import *
+from PIL import Image
+
+# 기본 색상
+bgColor="#FFDFB9"
+fgColor="#A4193D"
+hoverColor="#C850C0"
 
 # 사용자 데이터 로드 함수
 def load_user_data(filepath='users.json'):
@@ -23,13 +31,23 @@ tier_ranking = {
 }
 
 def tier_board():
-    root = tk.Tk()
+    root = customtkinter.CTkToplevel()
     root.geometry("400x500")
     root.title("TOEIC Vocabulary Tier Leaderboard")
+    root.config(background=bgColor)
+    ranktableImg=customtkinter.CTkImage(light_image=Image.open("rank_table.png"),
+                               dark_image=Image.open("rank_table.png"),
+                               size=(230,230))
+    # 이미지를 표시할 레이블 생성
+    image_label = customtkinter.CTkLabel(root,text="", image=ranktableImg, bg_color=bgColor)
+    image_label.pack()
+    # 스타일 생성 및 설정
+    style = ttk.Style()
+    style.configure("Custom.Treeview",background=bgColor,foreground='black',fieldbackground=bgColor)
 
     # 트리뷰(트리 형태의 데이터 구조) 생성
-    tree = ttk.Treeview(root, columns=('Username', 'Tier', 'Score'), show='headings')
-
+    tree = ttk.Treeview(root, style="Custom.Treeview", columns=('Username', 'Tier', 'Score'), show='headings')
+    
     # 스크롤바 생성
     vsb = ttk.Scrollbar(root, orient="vertical", command=tree.yview)
     vsb.pack(side='right', fill='y')
@@ -60,4 +78,5 @@ def tier_board():
 
     # tkinter 메인루프 실행
     root.mainloop()
+
 

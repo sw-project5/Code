@@ -1,15 +1,24 @@
 
 import tkinter
 from tkinter import font as tkfont 
+import customtkinter 
+from customtkinter import *
+from PIL import Image
+#기본 색상
+bgColor="#FFDFB9"
+fgColor="#A4193D"
+hoverColor="#C850C0"
+
 def open_description_window(window):
     # 새로운 창 생성
-    description_window = tkinter.Tk()
-
+    description_window = customtkinter.CTkToplevel(window)
+    
     description_window.title("단어장 설명")
     description_window.geometry("400x500")
     description_window.resizable(0, 0)
+    description_window.config(background=bgColor)
 
-    title_label = tkinter.Label(description_window, text="TOEICVOCAMACA", width=20, height=2, font=("맑은 고딕", 24, "bold"))
+    title_label = tkinter.Label(description_window, text="TOEICVOCAMACA", width=20, height=2, font=("맑은 고딕", 24, "bold"),background=bgColor)
     title_label.pack()
 
     messages = [
@@ -25,13 +34,13 @@ def open_description_window(window):
     # 각 메시지에 대한 라벨 생성 및 배치
     for i, (sender, message) in enumerate(messages):
         if sender == "사용자":
-            label = tkinter.Label(description_window, text=message, font=("맑은 고딕", 12), anchor="w", wraplength=300,bd=0, justify="right")
+            label = tkinter.Label(description_window, text=message, font=("맑은 고딕", 10), anchor="w", wraplength=300,bd=0, justify="right",background="#FFCD4A")
             label.place(relx=0.9, rely=0.2 + i * 0.1, anchor=tkinter.E)
         else:
-            label = tkinter.Label(description_window, text=message, font=("맑은 고딕", 12), anchor="e", wraplength=300,bd=0, justify="left")
+            label = tkinter.Label(description_window, text=message, font=("맑은 고딕", 10), anchor="e", wraplength=300,bd=0, justify="left",background="#D5C1F7")
             label.place(relx=0.1, rely=0.2 + i * 0.1, anchor=tkinter.W)
 
-    close_button = tkinter.Button(description_window, text="닫기", command=description_window.destroy)
+    close_button = customtkinter.CTkButton(description_window, text="닫기", command=description_window.destroy,bg_color=bgColor,fg_color=fgColor,hover_color=hoverColor)
     close_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
 
     description_window.mainloop()

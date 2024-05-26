@@ -4,7 +4,16 @@ import json
 from tier_leaderboard import tier_board  # tier_board_page 모듈에서 tier_board 함수를 import
 from word_window import open_wordlist_window
 from test_main_window import open_test_window
+import customtkinter 
+from customtkinter import *
+from PIL import Image
 
+# 기본 색상
+bgColor = "#FFDFB9"
+fgColor = "#A4193D"
+hoverColor = "#C850C0"
+rankImg=customtkinter.CTkImage(light_image=Image.open("ranking.png"),dark_image=Image.open("ranking.png"),size=(25,25))
+refreshImg=customtkinter.CTkImage(light_image=Image.open("refresh2.png"),dark_image=Image.open("refresh2.png"),size=(30,30))
 # 현재 로그인된 사용자 정보를 저장할 전역 변수
 current_user = None
 
@@ -26,10 +35,11 @@ def open_user_window(user):
     global current_user, username_label, level_label
     current_user = user
 
-    window = tk.Tk()
+    window = customtkinter.CTkToplevel()
     window.title("TOEICVOCAMACA - 단어장 목록")
     window.geometry("400x500+100+100")
     window.resizable(False, False)
+    window.config(background=bgColor)
 
     # 로그아웃 기능
     def logout():
@@ -43,10 +53,11 @@ def open_user_window(user):
         confirm = messagebox.askokcancel("회원 탈퇴", "정말 회원 탈퇴하시겠습니까?")
         if confirm:
             # 비밀번호 입력 창 생성
-            password_window = tk.Toplevel(window)
+            password_window = customtkinter.CTkToplevel(window)
             password_window.title("회원 탈퇴 - 비밀번호 확인")
             password_window.geometry("300x150")
             password_window.resizable(False, False)
+            password_window.config(background=bgColor)
 
             def check_password():
                 entered_password = password_entry.get()
@@ -66,13 +77,13 @@ def open_user_window(user):
 
                 messagebox.showerror("회원 탈퇴", "아이디 또는 비밀번호가 일치하지 않습니다.")
 
-            password_label = tk.Label(password_window, text="비밀번호:")
+            password_label = tk.Label(password_window, text="비밀번호:",background=bgColor)
             password_label.pack()
 
-            password_entry = tk.Entry(password_window, show="*")
+            password_entry = customtkinter.CTkEntry(password_window, show="*",bg_color=bgColor,border_color=fgColor)
             password_entry.pack()
 
-            confirm_button = tk.Button(password_window, text="확인", command=check_password)
+            confirm_button = customtkinter.CTkButton(password_window, text="확인", command=check_password,bg_color=bgColor,fg_color=fgColor,hover_color=hoverColor)
             confirm_button.pack()
 
     def open_word_page():
@@ -84,36 +95,41 @@ def open_user_window(user):
         for user in user_data:
             if user['username'] == current_user['username']:
                 current_user.update(user)
-                username_label.config(text=f"아이디: {current_user['username']}")
-                level_label.config(text=f"레벨: {current_user.get('level', 'N/A')}")
+                username_label.config(text=f"ID: {current_user['username']}")
+                level_label.config(text=f"Level: {current_user.get('level', 'N/A')}")
                 break
 
     # 사용자 정보 표시 레이블 생성
     user_info_frame = tk.Frame(window)
     user_info_frame.pack(pady=20)
+    user_info_frame.config(background=bgColor)
 
-    username_label = tk.Label(user_info_frame, text=f"아이디: {current_user['username']}", font=("Arial", 12))
+    username_label = tk.Label(user_info_frame, text=f"ID: {current_user['username']}", font=("Arial", 12), background=bgColor)
     username_label.pack()
 
-    level_label = tk.Label(user_info_frame, text=f"레벨: {current_user.get('level', 'N/A')}", font=("Arial", 12))
-    level_label.pack()
+    level_frame = tk.Frame(user_info_frame, background=bgColor)
+    level_frame.pack()
 
-    word_list_button = tk.Button(window, text="단어장", width=8, height=10, command=open_wordlist_window)
+    level_label = tk.Label(level_frame, text=f"Level: {current_user.get('level', 'N/A')}", font=("Arial", 12), background=bgColor)
+    level_label.pack(side=tk.LEFT)
+
+    tier_board_button = customtkinter.CTkButton(level_frame,text="",image=rankImg, bg_color=bgColor,fg_color=bgColor,border_color=fgColor, hover_color=hoverColor,command=tier_board,width=25,height=25,border_width=2)
+    tier_board_button.pack(side=customtkinter.LEFT, padx=5)
+    
+
+    word_list_button = customtkinter.CTkButton(window, text="단어장", width=80, height=200, command=open_wordlist_window, bg_color=fgColor,fg_color=fgColor,hover_color=hoverColor)
     word_list_button.place(relx=0.3, rely=0.4, anchor=tk.CENTER)
 
-    test_button = tk.Button(window, text="테스트", width=8, height=10, command=lambda: open_test_window(user))  # command="테스트 페이지"
+    test_button = customtkinter.CTkButton(window, text="테스트", width=80, height=200, command=lambda: open_test_window(user), bg_color=fgColor,fg_color=fgColor,hover_color=hoverColor)  # command="테스트 페이지"
     test_button.place(relx=0.7, rely=0.4, anchor=tk.CENTER)
 
-    tier_board_button = tk.Button(window, text="티어 순위표", command=tier_board)
-    tier_board_button.place(relx=0.5, rely=0.62, anchor=tk.CENTER)
-
-    logout_button = tk.Button(window, text="로그아웃", command=logout)
+    logout_button = customtkinter.CTkButton(window, text="로그아웃", bg_color=bgColor, fg_color=fgColor, hover_color=hoverColor, corner_radius=32, command=logout)
     logout_button.place(relx=0.5, rely=0.75, anchor=tk.CENTER)
 
-    withdraw_button = tk.Button(window, text="회원 탈퇴", command=withdraw)
+    withdraw_button = customtkinter.CTkButton(window, text="회원 탈퇴", bg_color=bgColor, fg_color=fgColor, hover_color=hoverColor, corner_radius=32, command=withdraw)
     withdraw_button.place(relx=0.5, rely=0.82, anchor=tk.CENTER)
-
-    refresh_button = tk.Button(window, text="새로 고침", command=refresh_user_info)
-    refresh_button.place(relx=0.5, rely=0.89, anchor=tk.CENTER)
+    #새로고침 버튼
+    refresh_button = customtkinter.CTkButton(window, text="", width=20,height=20,image=refreshImg,bg_color=bgColor,fg_color=bgColor,border_color=bgColor,hover_color=hoverColor, command=refresh_user_info)
+    refresh_button.place(relx=0.001, rely=0.01, anchor=tk.NW)  # 맨 왼쪽 상단에 배치
 
     window.mainloop()

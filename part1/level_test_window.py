@@ -4,7 +4,10 @@ from wordDB import words
 import random
 from user_window import open_user_window
 import json
-
+# 기본 색상
+bgColor = "#FFDFB9"
+fgColor = "#A4193D"
+hoverColor = "#C850C0"
 # 사용자 데이터 로드 함수
 def load_user_data(filepath='users.json'):
     try:
@@ -30,8 +33,8 @@ new_value_name = "korean_meaning"
 new_questions = [{new_key_name: key, new_value_name: value} for item in words for key, value in item.items()]
 
 # 색깔 상수들 정의
-BGCOLOR = "#FFFFFF"     # 배경색
-BTN_COLOR = "#F0F0F0"   # 버튼 배경색
+BGCOLOR = bgColor    # 배경색
+BTN_COLOR = fgColor   # 버튼 배경색
 PROGRESS_COLOR = "#2ECC71" # 진행 바 색
 
 # 정답 번호를 담을 변수 초기화
