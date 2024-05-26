@@ -35,30 +35,6 @@
         "level": "admin"
     },
     {
-        "username": "1",
-        "password": "1",
-        "birthday": "010101",
-        "firstlogin": false,
-        "level": "Platinum",
-        "score": 50
-    },
-    {
-        "username": "2",
-        "password": "2",
-        "birthday": "020202",
-        "firstlogin": false,
-        "level": "Iron",
-        "score": 0
-    },
-    {
-        "username": "3",
-        "password": "3",
-        "birthday": "020202",
-        "firstlogin": false,
-        "level": "Iron",
-        "score": 1
-    },
-    {
         "username": "test",
         "password": "test",
         "birthday": "010101",
@@ -72,14 +48,6 @@
         "birthday": "060606",
         "firstlogin": true,
         "level": "iron",
-        "score": 0
-    },
-    {
-        "username": "111",
-        "password": "111",
-        "birthday": "010101",
-        "firstlogin": false,
-        "level": "Iron",
         "score": 0
     },
     {
