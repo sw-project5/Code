@@ -1,5 +1,4 @@
-from tkinter import *
-import tkinter
+import tkinter as tk
 import random
 from wordDB import words
 
@@ -30,6 +29,20 @@ buttons = []
 entry = None
 check_btn = None
 
+def wrap_text(text, line_length):
+    words = text.split()
+    lines = []
+    current_line = ""
+    for word in words:
+        if len(current_line) + len(word) + 1 <= line_length:
+            current_line += (word + " ")
+        else:
+            lines.append(current_line.strip())
+            current_line = word + " "
+    if current_line:
+        lines.append(current_line.strip())
+    return "\n".join(lines)
+
 def next_question():
     global answer, current_question, correct_count, wrong_count
 
@@ -40,15 +53,14 @@ def next_question():
         for widget in window.winfo_children():
             widget.destroy()
         level_text = f"맞은 문제의 수: {correct_count} 입니다."
-        level_label = Label(window, text=level_text, font=("맑은 고딕", 20))
-        level_label.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+        level_label = tk.Label(window, text=level_text, font=("맑은 고딕", 20))
+        level_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         
         reset_counts()  # 맞은 문제 수와 틀린 문제 수 초기화
 
-        close_button = tkinter.Button(window, text="닫기", command=window.destroy)
-        close_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
+        close_button = tk.Button(window, text="닫기", command=window.destroy)
+        close_button.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
 
-        
         return
 
     # 홀수 번째 문제는 4지선다형, 짝수 번째 문제는 단답형으로 생성
@@ -70,9 +82,9 @@ def multi_choice_question():
     # 버튼 생성
     buttons = []
     for i in range(4):
-        btn = Button(window, text=f"{i+1}번", width=35, height=3,
-                     command=lambda idx=i: check_answer(idx),
-                     font=("맑은 고딕", 13, "bold"), bg=BTN_COLOR)
+        btn = tk.Button(window, text=f"{i+1}번", width=35, height=3,
+                        command=lambda idx=i: check_answer(idx),
+                        font=("맑은 고딕", 10, "bold"), bg=BTN_COLOR)
         btn.pack()
         buttons.append(btn)
 
@@ -84,7 +96,8 @@ def multi_choice_question():
 
     # 버튼에 보기 할당
     for i in range(4):
-        buttons[i].config(text=multi_choice[i][new_value_name], command=lambda idx=i: check_answer(idx))
+        wrapped_text = wrap_text(multi_choice[i][new_value_name], 20)  # 텍스트를 20자로 줄바꿈
+        buttons[i].config(text=wrapped_text, command=lambda idx=i: check_answer(idx))
 
 def short_answer_question():
     global answer, entry, check_btn
@@ -96,12 +109,12 @@ def short_answer_question():
     question_label.config(text=cur_question)
 
     # 입력 창 생성
-    entry = Entry(window, font=("맑은 고딕", 12), width=30)
+    entry = tk.Entry(window, font=("맑은 고딕", 12), width=30)
     entry.pack()
 
     # 확인 버튼 생성
-    check_btn = Button(window, text="확인", width=15, height=2,
-                       command=check_short_answer, font=("맑은 고딕", 15, "bold"), bg=BTN_COLOR)
+    check_btn = tk.Button(window, text="확인", width=15, height=2,
+                          command=check_short_answer, font=("맑은 고딕", 15, "bold"), bg=BTN_COLOR)
     check_btn.pack()
 
 def check_short_answer():
@@ -144,29 +157,29 @@ def open_wordtest_window():
     global window, question_label, progress_label, progress_canvas, current_question
 
     # Tkinter 창 생성
-    window = Tk()
+    window = tk.Tk()
     window.title("영어 퀴즈")
-    window.geometry("450x500+100+100")
+    window.geometry("600x500+100+100")
     window.resizable(False, False)
 
     # 사용자의 수준을 알아보기 위한 텍스트
-    level_text = Label(window, text="사용자의 수준을 알아보기 위해 단어 테스트를 진행하겠습니다.",
-                       font=("맑은 고딕", 13))
+    level_text = tk.Label(window, text="사용자의 수준을 알아보기 위해 단어 테스트를 진행하겠습니다.",
+                          font=("맑은 고딕", 13))
     level_text.pack()
 
     # 문제 표시 레이블 생성
-    question_label = Label(window, width=30, height=4,
-                           text="test", font=("맑은 고딕", 20, "bold"), fg="black")
+    question_label = tk.Label(window, width=30, height=4,
+                              text="test", font=("맑은 고딕", 20, "bold"), fg="black")
     question_label.pack()
 
     # 진행 상황 표시 레이블 생성
     current_question = 0
-    progress_label = Label(window, text=f"{current_question}/{total_questions}",
-                           font=("맑은 고딕", 12))
+    progress_label = tk.Label(window, text=f"{current_question}/{total_questions}",
+                              font=("맑은 고딕", 12))
     progress_label.pack()
 
     # 진행 상황 바 생성
-    progress_canvas = Canvas(window, width=300, height=15, highlightthickness=0)
+    progress_canvas = tk.Canvas(window, width=300, height=15, highlightthickness=0)
     progress_canvas.pack()
 
     # 초기 문제 생성
@@ -174,4 +187,5 @@ def open_wordtest_window():
 
     # Tkinter 창 실행
     window.mainloop()
+
 

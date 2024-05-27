@@ -2,8 +2,14 @@ import tkinter
 from tkinter import messagebox
 import json
 from datetime import datetime
-# from login_window import open_login_window
+import customtkinter 
+from customtkinter import *
+from PIL import Image
 
+# 기본 색상
+bgColor="#FFDFB9"
+fgColor="#A4193D"
+hoverColor="#C850C0"
 
 def join():
     # entry.get() : 기입창의 텍스트를 문자열로 반환
@@ -83,49 +89,53 @@ def check_duplicate_username(username):
     return False
 
 def open_join_window(window):
-    join_window = tkinter.Tk()
+    join_window = customtkinter.CTkToplevel()
     join_window.title("회원가입")
     join_window.geometry("400x500")
-
-    title_label = tkinter.Label(join_window, text="회원가입", width=20, height=2, font=("맑은 고딕", 24, "bold"))
-    title_label.pack()
-
-    username_label = tkinter.Label(join_window, text="사용자 이름:")
-    username_label.pack()
+    join_window.config(background=bgColor)
+    signUpTextImg=customtkinter.CTkImage(light_image=Image.open("signup.png"),
+                               dark_image=Image.open("signup.png"),
+                               size=(250,250))
+    # title_label = tkinter.Label(join_window, text="회원가입", background=bgColor,width=20, height=2, font=("맑은 고딕", 24, "bold"))
+    # title_label.pack()
+    title_label = customtkinter.CTkLabel(join_window,text="", bg_color=bgColor,image=signUpTextImg)
+    title_label.place(relx=0.5,rely=0.2,anchor="center")
+    username_label = tkinter.Label(join_window, text="사용자 이름:",background=bgColor)
+    username_label.place(relx=0.5,rely=0.35,anchor="center")
 
     global username_entry
-    username_entry = tkinter.Entry(join_window)
-    username_entry.pack()
+    username_entry = customtkinter.CTkEntry(join_window, placeholder_text="영어로 입력하세요",fg_color=bgColor,border_color=fgColor)
+    username_entry.place(relx=0.5,rely=0.4,anchor="center")
 
     # 중복 확인 버튼 추가
-    check_button = tkinter.Button(join_window, text="중복 확인", command=lambda: check_duplicate(username_entry.get()))
-    check_button.pack()
+    check_button = customtkinter.CTkButton(join_window,width=20, height=2,text="중복 확인",bg_color=bgColor,fg_color=fgColor,hover_color=hoverColor, command=lambda: check_duplicate(username_entry.get()))
+    check_button.place(relx=0.85, rely=0.4, anchor=tkinter.E)
 
-    password_label = tkinter.Label(join_window, text="비밀번호 입력:")
-    password_label.pack()
+    password_label = tkinter.Label(join_window, text="비밀번호 입력:",background=bgColor)
+    password_label.place(relx=0.5,rely=0.45,anchor="center")
 
     global password_entry
-    password_entry = tkinter.Entry(join_window, show="*")
-    password_entry.pack()
+    password_entry = customtkinter.CTkEntry(join_window, fg_color=bgColor,border_color=fgColor,show="*")
+    password_entry.place(relx=0.5,rely=0.5,anchor="center")
 
-    confirm_password_label = tkinter.Label(join_window, text="비밀번호 재확인:")
-    confirm_password_label.pack()
+    confirm_password_label = tkinter.Label(join_window, text="비밀번호 재확인:",background=bgColor)
+    confirm_password_label.place(relx=0.5,rely=0.55,anchor="center")
 
     global confirm_password_entry
-    confirm_password_entry = tkinter.Entry(join_window, show="*")
-    confirm_password_entry.pack()
+    confirm_password_entry = customtkinter.CTkEntry(join_window,fg_color=bgColor,border_color=fgColor, show="*")
+    confirm_password_entry.place(relx=0.5,rely=0.6,anchor="center")
 
-    birthday_label = tkinter.Label(join_window, text="생년월일(YYMMDD):")
-    birthday_label.pack()
+    birthday_label = tkinter.Label(join_window, text="생년월일(YYMMDD):",background=bgColor)
+    birthday_label.place(relx=0.5,rely=0.65,anchor="center")
 
     global birthday_entry
-    birthday_entry = tkinter.Entry(join_window)
-    birthday_entry.pack()
+    birthday_entry = customtkinter.CTkEntry(join_window,fg_color=bgColor,border_color=fgColor)
+    birthday_entry.place(relx=0.5,rely=0.7,anchor="center")
 
-    join_button = tkinter.Button(join_window, text="회원가입", command=join)
-    join_button.pack()
+    join_button = customtkinter.CTkButton(join_window, text="회원가입", bg_color=bgColor,fg_color=fgColor,hover_color=hoverColor,command=join)
+    join_button.place(relx=0.5,rely=0.8,anchor="center")
 
-    close_button = tkinter.Button(join_window, text="닫기", command=join_window.destroy)
+    close_button = customtkinter.CTkButton(join_window, text="닫기", width=20,height=10,bg_color=bgColor,fg_color=fgColor,hover_color=hoverColor,command=join_window.destroy)
     close_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
 
     def check_duplicate(username):
@@ -135,3 +145,5 @@ def open_join_window(window):
             tkinter.messagebox.showerror("알림", "사용 가능한 사용자 이름입니다.")
         else:
             tkinter.messagebox.showerror("에러", "사용자 이름을 입력하시오.")
+
+    join_window.mainloop()

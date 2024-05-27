@@ -67,7 +67,7 @@ def open_wordleveltest_window(user):
     # Tkinter 창 생성
     window = Tk()
     window.title("영어 퀴즈")
-    window.geometry("450x500+100+100")
+    window.geometry("600x500+100+100")
     window.resizable(False, False)
 
     # 사용자의 수준을 알아보기 위한 텍스트
@@ -94,6 +94,20 @@ def open_wordleveltest_window(user):
 
     # Tkinter 창 실행
     window.mainloop()
+
+def wrap_text(text, line_length):
+    words = text.split()
+    lines = []
+    current_line = ""
+    for word in words:
+        if len(current_line) + len(word) + 1 <= line_length:
+            current_line += (word + " ")
+        else:
+            lines.append(current_line.strip())
+            current_line = word + " "
+    if current_line:
+        lines.append(current_line.strip())
+    return "\n".join(lines)
 
 def next_question():
     global answer, current_question, correct_count, wrong_count, score, level
@@ -153,7 +167,7 @@ def multi_choice_question():
     for i in range(4):
         btn = Button(window, text=f"{i+1}번", width=35, height=3,
                      command=lambda idx=i: check_answer(idx),
-                     font=("맑은 고딕", 13, "bold"), bg=BTN_COLOR)
+                     font=("맑은 고딕", 10, "bold"), bg=BTN_COLOR)
         btn.pack()
         buttons.append(btn)
 
@@ -163,7 +177,8 @@ def multi_choice_question():
     question_label.config(text=cur_question)
 
     for i in range(4):
-        buttons[i].config(text=multi_choice[i][new_value_name], command=lambda idx=i: check_answer(idx))
+        wrapped_text = wrap_text(multi_choice[i][new_value_name], 20)  # 텍스트를 20자로 줄바꿈
+        buttons[i].config(text=wrapped_text, command=lambda idx=i: check_answer(idx))
 
 def short_answer_question():
     global answer, entry, check_btn
@@ -213,3 +228,5 @@ def restart_test():
     wrong_count = 0
     current_question = 0
     print_score = 0
+
+

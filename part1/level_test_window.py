@@ -4,7 +4,10 @@ from wordDB import words
 import random
 from user_window import open_user_window
 import json
-
+# 기본 색상
+bgColor = "#FFDFB9"
+fgColor = "#A4193D"
+hoverColor = "#C850C0"
 # 사용자 데이터 로드 함수
 def load_user_data(filepath='users.json'):
     try:
@@ -30,8 +33,8 @@ new_value_name = "korean_meaning"
 new_questions = [{new_key_name: key, new_value_name: value} for item in words for key, value in item.items()]
 
 # 색깔 상수들 정의
-BGCOLOR = "#FFFFFF"     # 배경색
-BTN_COLOR = "#F0F0F0"   # 버튼 배경색
+BGCOLOR = bgColor    # 배경색
+BTN_COLOR = fgColor   # 버튼 배경색
 PROGRESS_COLOR = "#2ECC71" # 진행 바 색
 
 # 정답 번호를 담을 변수 초기화
@@ -54,7 +57,7 @@ def open_level_test_window(username):
 
     level_test_window = tk.Tk()
     level_test_window.title("영어 퀴즈")
-    level_test_window.geometry("450x500+100+100")
+    level_test_window.geometry("600x500+100+100")
     level_test_window.resizable(False, False)
 
     # 테스트 결과 맨 위로 올라오게 하기
@@ -107,26 +110,38 @@ def next_question(window, question_label, progress_label, progress_canvas):
     progress_label.config(text=f"{current_question}/{total_questions}")
     update_progress(progress_canvas)
 
+def wrap_text(text, line_length):
+    words = text.split()
+    lines = []
+    current_line = ""
+    for word in words:
+        if len(current_line) + len(word) + 1 <= line_length:
+            current_line += (word + " ")
+        else:
+            lines.append(current_line.strip())
+            current_line = word + " "
+    if current_line:
+        lines.append(current_line.strip())
+    return "\n".join(lines)
+
 def multi_choice_question(window, question_label, progress_label, progress_canvas):
     global answer, buttons
     
-    # 버튼 생성
-    buttons = []
-    for i in range(4):
-        btn = tk.Button(window, text=f"{i+1}번", width=35, height=3, 
-                        command=lambda idx=i: check_answer(idx, window, question_label, progress_label, progress_canvas), 
-                        font=("맑은 고딕", 13, "bold"), bg="#F0F0F0")
-        btn.pack()
-        buttons.append(btn)
     # 문제 및 보기를 랜덤으로 선택
     multi_choice = random.sample(new_questions, 4)
     answer = random.randint(0, 3)
     cur_question = multi_choice[answer][new_key_name]
     question_label.config(text=cur_question)
-    
-    # 버튼에 보기 할당
+
+    # 버튼 생성
+    buttons = []
     for i in range(4):
-        buttons[i].config(text=multi_choice[i][new_value_name], command=lambda idx=i: check_answer(idx, window, question_label, progress_label, progress_canvas))
+        wrapped_text = wrap_text(multi_choice[i][new_value_name], 20)  # 텍스트를 20자로 줄바꿈
+        btn = tk.Button(window, text=wrapped_text, width=35, height=2, 
+                        command=lambda idx=i: check_answer(idx, window, question_label, progress_label, progress_canvas), 
+                        font=("맑은 고딕", 10, "bold"), bg="#F0F0F0")
+        btn.pack()
+        buttons.append(btn)
 
 def short_answer_question(window, question_label, progress_label, progress_canvas):
     global answer, entry, check_btn
@@ -173,19 +188,19 @@ def update_progress(progress_canvas):
     progress_canvas.create_rectangle(0, 0, current_question / total_questions * 300, 20, fill="#2ECC71", outline="")
 
 def show_level(window, user_data):
-    global level, current_user ,score
+    global level, current_user, score
 
     user = next((user for user in user_data if user['username'] == current_user), None)
     if user:
         if correct_count >= 0 and correct_count <= 4:
             level = "Iron"
-            score=0
+            score = 0
         elif correct_count >= 5 and correct_count <= 14:
             level = "Bronze"
-            score=10
+            score = 10
         elif correct_count >= 15 and correct_count <= 20:
             level = "Silver"
-            score=20
+            score = 20
 
         user['level'] = level
         user['score'] = score

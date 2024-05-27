@@ -14,12 +14,15 @@ def add_word(words, word_entry, meaning_entry, word_listbox):
     eng = word_entry.get().strip()
     kor = meaning_entry.get().strip()
     if eng and kor:
-        words.append({eng: kor})
-        update_word_listbox(words, word_listbox)
-        word_entry.delete(0, tk.END)
-        meaning_entry.delete(0, tk.END)
+        if any(eng in word for word in words):
+            messagebox.showwarning("Duplicate Error", "이미 존재하는 단어입니다.")
+        else:
+            words.append({eng: kor})
+            update_word_listbox(words, word_listbox)
+            word_entry.delete(0, tk.END)
+            meaning_entry.delete(0, tk.END)
     else:
-        messagebox.showwarning("Input Error", "Both fields must be filled")
+        messagebox.showwarning("Input Error", "단어와 뜻 모두 입력해주세요.")
 
 def update_word(words, word_entry, meaning_entry, word_listbox):
     selected = word_listbox.curselection()
@@ -33,7 +36,7 @@ def update_word(words, word_entry, meaning_entry, word_listbox):
             word_entry.delete(0, tk.END)
             meaning_entry.delete(0, tk.END)
         else:
-            messagebox.showwarning("Input Error", "Both fields must be filled")
+            messagebox.showwarning("Input Error", "단어와 뜻 모두 입력해주세요.")
     else:
         eng = word_entry.get().strip()
         kor = meaning_entry.get().strip()
@@ -48,27 +51,36 @@ def update_word(words, word_entry, meaning_entry, word_listbox):
             word_entry.delete(0, tk.END)
             meaning_entry.delete(0, tk.END)
         else:
-            messagebox.showwarning("Word Not Found", "The word is not in the list")
+            messagebox.showwarning("Word Not Found", "해당 단어는 존재하지 않습니다.")
 
-def delete_word(words, word_entry, word_listbox):
+def delete_word(words, word_entry, meaning_entry, word_listbox):
+    eng = word_entry.get().strip()
+    kor = meaning_entry.get().strip()
     selected = word_listbox.curselection()
     if selected:
         index = selected[0]
-        del words[index]
-        update_word_listbox(words, word_listbox)
+        word = list(words[index].keys())[0]
+        meaning = words[index][word]
+        if word == eng and meaning == kor:
+            del words[index]
+            update_word_listbox(words, word_listbox)
+            word_entry.delete(0, tk.END)
+            meaning_entry.delete(0, tk.END)
+        else:
+            messagebox.showwarning("Mismatch Error", "해당 단어와 뜻이 일치하지 않습니다.")
     else:
-        eng = word_entry.get().strip()
         found = False
         for i, word in enumerate(words):
-            if eng in word:
+            if eng in word and word[eng] == kor:
                 del words[i]
                 found = True
                 break
         if found:
             update_word_listbox(words, word_listbox)
             word_entry.delete(0, tk.END)
+            meaning_entry.delete(0, tk.END)
         else:
-            messagebox.showwarning("Word Not Found", "The word is not in the list")
+            messagebox.showwarning("Word Not Found", "해당 단어와 뜻이 일치하지 않습니다.")
 
 def save_words_to_file(words, file_path='wordDB.py'):
     words_data = {"words": words}
@@ -110,7 +122,7 @@ def open_manager_window():
     update_button = tk.Button(button_frame, text="Update", command=lambda: update_word(words, word_entry, meaning_entry, word_listbox))
     update_button.grid(row=0, column=1)
 
-    delete_button = tk.Button(button_frame, text="Delete", command=lambda: delete_word(words, word_entry, word_listbox))
+    delete_button = tk.Button(button_frame, text="Delete", command=lambda: delete_word(words, word_entry, meaning_entry, word_listbox))
     delete_button.grid(row=0, column=2)
 
     # 완료 버튼을 추가합니다
