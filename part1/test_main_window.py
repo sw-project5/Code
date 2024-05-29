@@ -45,4 +45,6 @@ def open_test_window(user):
     close_button = customtkinter.CTkButton(test_window, text="닫기",width=20,height=10, command=test_window.destroy,bg_color=fgColor,fg_color=fgColor,hover_color=hoverColor)
     close_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
 
+    test_window.attributes("-topmost", True)
+    test_window.after(100, lambda: test_window.attributes("-topmost", False))
     test_window.mainloop()

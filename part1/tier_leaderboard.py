@@ -43,15 +43,19 @@ def tier_board():
     image_label.pack()
     # 스타일 생성 및 설정
     style = ttk.Style()
+    style.theme_use("clam")  # 'clam' 테마 사용
     style.configure("Custom.Treeview",background=bgColor,foreground='black',fieldbackground=bgColor)
-
+    style.configure("Custom.Treeview.Heading", background="#FFDFB9", foreground='black', font=('Helvetica', 12, 'bold'))
+    style.configure("Custom.Vertical.TScrollbar", gripcount=0, arrowsize=12, background="#FFDFB9")
+    
     # 트리뷰(트리 형태의 데이터 구조) 생성
     tree = ttk.Treeview(root, style="Custom.Treeview", columns=('Username', 'Tier', 'Score'), show='headings')
     
     # 스크롤바 생성
     vsb = ttk.Scrollbar(root, orient="vertical", command=tree.yview)
     vsb.pack(side='right', fill='y')
-
+    vsb.config(style="Custom.Vertical.TScrollbar")
+    
     # 트리뷰에 스크롤바 연결
     tree.configure(yscrollcommand=vsb.set)
 
@@ -61,9 +65,9 @@ def tier_board():
     tree.heading('Score', text='Score')
 
     # 컬럼 너비 설정
-    tree.column('Username', width=150)
-    tree.column('Tier', width=100)
-    tree.column('Score', width=100)
+    tree.column('Username', width=150, anchor='center')
+    tree.column('Tier', width=100, anchor='center')
+    tree.column('Score', width=100,anchor='center')
 
     # 사용자 데이터 로드 및 정렬
     user_data = load_user_data()
@@ -77,6 +81,7 @@ def tier_board():
     tree.pack()
 
     # tkinter 메인루프 실행
+    root.attributes("-topmost", True)
+    root.after(100, lambda: root.attributes("-topmost", False))
     root.mainloop()
-
 

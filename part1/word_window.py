@@ -17,6 +17,10 @@ def display_words(page_num):
     page_window.resizable(False, False)
     page_window.config(background=bgColor)
 
+    page_window.attributes("-topmost", True)
+    page_window.update()  # Update the window to apply the topmost attribute
+    page_window.attributes("-topmost", False)
+
     frame = tk.Frame(page_window)
     frame.pack(pady=20)
     frame.config(background=bgColor)
@@ -52,6 +56,11 @@ def display_words(page_num):
     close_button = customtkinter.CTkButton(page_window, text="닫기", width=20,height=10,bg_color=bgColor,fg_color=fgColor,hover_color=hoverColor,command=page_window.destroy)
     close_button.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
 
+    page_window.attributes("-topmost", True)
+    page_window.lift()
+    page_window.after(100, lambda: page_window.attributes("-topmost", False))
+
+    page_window.mainloop()
 # 전역 변수
 words_per_page = 200
 
@@ -65,6 +74,10 @@ def search_word():
     result_window.geometry("400x500+100+100")
     result_window.resizable(False, False)
     result_window.config(background=bgColor)
+
+    result_window.attributes("-topmost", True)
+    result_window.update()  # Update the window to apply the topmost attribute
+    result_window.attributes("-topmost", False)
 
     frame = tk.Frame(result_window)
     frame.pack(pady=20)
@@ -89,6 +102,7 @@ def search_word():
 
     results = [word for word in words if query in list(word.keys())[0].lower() or query in list(word.values())[0].lower()]
     
+    
     if results:
         for word in results:
             for english_word, meaning in word.items():
@@ -104,6 +118,11 @@ def search_word():
     close_button = customtkinter.CTkButton(result_window, text="닫기", width=20,height=10,bg_color=bgColor,fg_color=fgColor,hover_color=hoverColor,command=result_window.destroy)
     close_button.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
 
+    result_window.attributes("-topmost", True)
+    result_window.lift()
+    result_window.after(100, lambda: result_window.attributes("-topmost", False))
+
+    result_window.mainloop()
 def open_wordlist_window():
     global root, search_entry
     root = customtkinter.CTkToplevel()
@@ -145,11 +164,12 @@ def open_wordlist_window():
     else:
         no_data_label = tk.Label(root, text="단어가 없습니다", anchor='w', justify='left')
         no_data_label.pack(pady=20)
-
+    root.attributes("-topmost", True)
+    root.after(100, lambda: root.attributes("-topmost", False))
     root.mainloop()
+    
 
-# Test the function
-open_wordlist_window()
+
 
 
 # import tkinter as tk
