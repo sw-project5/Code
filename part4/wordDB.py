@@ -1,6 +1,6 @@
 words = [
     {
-        "resume": "이력서"
+        "resume": "안녕"
     },
     {
         "applicant": "지원자, 신청자"
@@ -313,9 +313,6 @@ words = [
     },
     {
         "delegate": "(권한등을)위임하다. 대표"
-    },
-    {
-        "attentively": "주의 깊게, 조심스럽게"
     },
     {
         "supervision": "감독"
@@ -2995,5 +2992,11 @@ words = [
     },
     {
         "official": "공무원, 관리, 공식적인"
+    },
+    {
+        "cake": "케이크"
+    },
+    {
+        "hello": "안녕"
     }
 ]
