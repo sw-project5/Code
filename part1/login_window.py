@@ -48,14 +48,14 @@ def open_login_window(window):
     username_label = customtkinter.CTkLabel(login_window, text="", bg_color=bgColor, image=img)
     username_label.place(relx=0.25,rely=0.35,anchor="center")
 
-    username_entry = customtkinter.CTkEntry(login_window, placeholder_text="사용자 이름 입력..", fg_color=bgColor,border_color=fgColor)
+    username_entry = customtkinter.CTkEntry(login_window, placeholder_text="사용자 이름 입력..",placeholder_text_color="#964B64", fg_color=bgColor,border_color=fgColor,corner_radius=0,text_color="black")
     username_entry.place(relx=0.5,rely=0.35,anchor="center")
 
     my_img = customtkinter.CTkImage(light_image=Image.open("password2.png"), dark_image=Image.open("password2.png"), size=(50, 50))
     password_label = customtkinter.CTkLabel(login_window, text="", bg_color=bgColor, image=my_img)
     password_label.place(relx=0.25,rely=0.45,anchor="center")
 
-    password_entry = customtkinter.CTkEntry(login_window, placeholder_text="비밀번호 입력..", fg_color=bgColor, border_color=fgColor,show="*")
+    password_entry = customtkinter.CTkEntry(login_window, placeholder_text="비밀번호 입력..",placeholder_text_color=fgColor, fg_color=bgColor, border_color=fgColor,corner_radius=0,text_color="black",show="*")
     password_entry.place(relx=0.5,rely=0.45,anchor="center")
 
     def login():
@@ -77,7 +77,7 @@ def open_login_window(window):
                     json.dump(user_data, file, indent=4)
                 messagebox.showinfo("첫 로그인 성공", "레벨 확인 테스트로 이동합니다.")
                 open_level_test_window(username)  # 레벨 확인 테스트 함수 호출  
-
+                # open_user_window(user)
             elif user.get('level')=="admin":
                 messagebox.showinfo("관리자 로그인 성공","관리자님 환영합니다.")
                 open_manager_window()
@@ -100,4 +100,6 @@ def open_login_window(window):
     close_button = customtkinter.CTkButton(login_window, text="닫기", width=20,height=10,bg_color=bgColor,fg_color=fgColor,hover_color=hoverColor,command=login_window.destroy)
     close_button.place(relx=0.5,rely=0.9,anchor="center")
 
+    login_window.attributes("-topmost", True)
+    login_window.after(100, lambda: login_window.attributes("-topmost", False))
     login_window.mainloop()

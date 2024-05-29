@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 import json
-from tier_leaderboard import tier_board  # tier_board 함수 import
+from tier_leaderboard import tier_board  # tier_board_page 모듈에서 tier_board 함수를 import
 from word_window import open_wordlist_window
 from test_main_window import open_test_window
-import customtkinter
+import customtkinter 
 from customtkinter import *
 from PIL import Image
 
@@ -51,17 +51,22 @@ def open_user_window(user):
 
     # 회원 탈퇴 기능
     def withdraw():
-        # 아이디 및 비밀번호 입력 창 생성
+    # 아이디 및 비밀번호 입력 창 생성
         password_window = customtkinter.CTkToplevel(window)
         password_window.title("회원 탈퇴 - 정보 확인")
         password_window.geometry("400x500")
         password_window.resizable(False, False)
         password_window.config(background=bgColor)
-        withdrawImg=customtkinter.CTkImage(light_image=Image.open("withdraw.png"),
-                               dark_image=Image.open("withdraw.png"),
-                               size=(300,300))
-        title_label = customtkinter.CTkLabel(password_window,text="", bg_color=bgColor,image=withdrawImg)
+        withdrawImg = customtkinter.CTkImage(light_image=Image.open("withdraw.png"),
+                                            dark_image=Image.open("withdraw.png"),
+                                            size=(300, 300))
+        title_label = customtkinter.CTkLabel(password_window, text="", bg_color=bgColor, image=withdrawImg)
         title_label.pack()
+
+        # 창 순서 조정 코드 추가
+        password_window.attributes("-topmost", True)
+        password_window.after(100, lambda: password_window.attributes("-topmost", False))
+
         def check_credentials():
             entered_username = username_entry.get()
             entered_password = password_entry.get()
@@ -84,22 +89,28 @@ def open_user_window(user):
                         messagebox.showerror("회원 탈퇴", "로그인된 아이디와 입력된 아이디가 일치하지 않습니다.")
                         return
 
+            # 회원 정보가 없는 경우 에러 메시지 출력
             messagebox.showerror("회원 탈퇴", "아이디 또는 비밀번호가 일치하지 않습니다.")
 
-        username_label = tk.Label(password_window, text="아이디:", background=bgColor)
-        username_label.pack()
+        try:
+            username_label = tk.Label(password_window, text="아이디:", background=bgColor)
+            username_label.pack()
 
-        username_entry = customtkinter.CTkEntry(password_window, bg_color=bgColor, border_color=fgColor)
-        username_entry.pack()
+            username_entry = customtkinter.CTkEntry(password_window, bg_color=bgColor, border_color=fgColor)
+            username_entry.pack()
 
-        password_label = tk.Label(password_window, text="비밀번호:", background=bgColor)
-        password_label.pack()
+            password_label = tk.Label(password_window, text="비밀번호:", background=bgColor)
+            password_label.pack()
 
-        password_entry = customtkinter.CTkEntry(password_window, show="*", bg_color=bgColor, border_color=fgColor)
-        password_entry.pack()
+            password_entry = customtkinter.CTkEntry(password_window, show="*", bg_color=bgColor, border_color=fgColor)
+            password_entry.pack()
 
-        confirm_button = customtkinter.CTkButton(password_window, text="확인", command=check_credentials, bg_color=bgColor, fg_color=fgColor, hover_color=hoverColor)
-        confirm_button.pack()
+            confirm_button = customtkinter.CTkButton(password_window, text="확인", command=check_credentials, bg_color=bgColor, fg_color=fgColor, hover_color=hoverColor)
+            confirm_button.pack()
+
+        except Exception as e:
+            messagebox.showerror("에러", f"회원 탈퇴 과정에서 오류가 발생했습니다: {e}")
+
 
     def open_word_page():
         window.destroy()
@@ -119,13 +130,13 @@ def open_user_window(user):
     user_info_frame.pack(pady=20)
     user_info_frame.config(background=bgColor)
 
-    username_label = tk.Label(user_info_frame, text=f"ID: {current_user['username']}", font=("Arial", 12), background=bgColor)
+    username_label = tk.Label(user_info_frame, text=f"ID: {current_user['username']}", font=("맑은 고딕", 14), background=bgColor)
     username_label.pack()
 
     level_frame = tk.Frame(user_info_frame, background=bgColor)
     level_frame.pack()
 
-    level_label = tk.Label(level_frame, text=f"Level: {current_user.get('level', 'N/A')}", font=("Arial", 12), background=bgColor)
+    level_label = tk.Label(level_frame, text=f"Level: {current_user.get('level', 'N/A')}", font=("맑은 고딕", 14), background=bgColor)
     level_label.pack(side=tk.LEFT)
 
     tier_board_button = customtkinter.CTkButton(level_frame, text="", image=rankImg, bg_color=bgColor, fg_color=bgColor, border_color=fgColor, hover_color=hoverColor, command=tier_board, width=25, height=25, border_width=2)
@@ -147,4 +158,6 @@ def open_user_window(user):
     refresh_button = customtkinter.CTkButton(window, text="", width=20, height=20, image=refreshImg, bg_color=bgColor, fg_color=bgColor, border_color=bgColor, hover_color=hoverColor, command=refresh_user_info)
     refresh_button.place(relx=0.001, rely=0.01, anchor=tk.NW)  # 맨 왼쪽 상단에 배치
 
+    window.attributes("-topmost", True)
+    window.after(100, lambda: window.attributes("-topmost", False))
     window.mainloop()
