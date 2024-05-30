@@ -131,7 +131,7 @@ class UserWindow:
         word_list_button = customtkinter.CTkButton(self.window, text="단어장", width=80, height=200, command=self.open_wordlist_window, bg_color=self.fgColor, fg_color=self.fgColor, hover_color=self.hoverColor)
         word_list_button.place(relx=0.3, rely=0.4, anchor=tk.CENTER)
 
-        test_button = customtkinter.CTkButton(self.window, text="테스트", width=80, height=200, command=self.open_test_page, bg_color=self.fgColor, fg_color=self.fgColor, hover_color=self.hoverColor)
+        test_button = customtkinter.CTkButton(self.window, text="테스트", width=80, height=200, command=lambda:self.open_test_page(user), bg_color=self.fgColor, fg_color=self.fgColor, hover_color=self.hoverColor)
         test_button.place(relx=0.7, rely=0.4, anchor=tk.CENTER)
 
         logout_button = customtkinter.CTkButton(self.window, text="로그아웃", bg_color=self.bgColor, fg_color=self.fgColor, hover_color=self.hoverColor, corner_radius=32, command=self.logout)
@@ -147,9 +147,9 @@ class UserWindow:
         self.window.after(100, lambda: self.window.attributes("-topmost", False))
         self.window.mainloop()
     
-    def open_test_page(self):
+    def open_test_page(self, user):
             test_window=TestWindow()
-            test_window.open_test_window(None)
+            test_window.open_test_window(user)
 
     def open_wordlist_window(self):
         word_window = WordWindow()
