@@ -77,7 +77,7 @@ def open_login_window(window):
                     json.dump(user_data, file, indent=4)
                 messagebox.showinfo("첫 로그인 성공", "레벨 확인 테스트로 이동합니다.")
                 open_level_test_window(username)  # 레벨 확인 테스트 함수 호출  
-                open_user_window(user)
+                # open_user_window(user)
             elif user.get('level')=="admin":
                 messagebox.showinfo("관리자 로그인 성공","관리자님 환영합니다.")
                 open_manager_window()

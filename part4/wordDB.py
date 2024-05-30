@@ -1,6 +1,6 @@
 words = [
     {
-        "resume": "안녕"
+        "resume": "이력서"
     },
     {
         "applicant": "지원자, 신청자"
@@ -13,9 +13,6 @@ words = [
     },
     {
         "qualified": "자격있는, 적격의"
-    },
-    {
-        "candidate": "후보자, 지원자"
     },
     {
         "confidence": "확신, 자신, 신임"

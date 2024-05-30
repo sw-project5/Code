@@ -35,14 +35,6 @@
         "level": "admin"
     },
     {
-        "username": "k",
-        "password": "1",
-        "birthday": "111111",
-        "firstlogin": false,
-        "level": "Iron",
-        "score": 0
-    },
-    {
         "username": "1",
         "password": "1",
         "birthday": "111111",
@@ -54,6 +46,166 @@
         "username": "2",
         "password": "2",
         "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "3",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "4",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "5",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "6",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "7",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "8",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "9",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "10",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "11",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "12",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "13",
+        "password": "2",
+        "birthday": "111111",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "pcy",
+        "password": "1",
+        "birthday": "010101",
+        "firstlogin": false,
+        "level": "Iron",
+        "score": 0
+    },
+    {
+        "username": "pp",
+        "password": "1",
+        "birthday": "010101",
+        "firstlogin": false,
+        "level": "Iron",
+        "score": 0
+    },
+    {
+        "username": "ppp",
+        "password": "1",
+        "birthday": "010101",
+        "firstlogin": false,
+        "level": "Iron",
+        "score": 0
+    },
+    {
+        "username": "u",
+        "password": "1",
+        "birthday": "010101",
+        "firstlogin": false,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "what",
+        "password": "1",
+        "birthday": "010101",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "asdf",
+        "password": "asdf",
+        "birthday": "020202",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "aaaa",
+        "password": "aaaa",
+        "birthday": "010101",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "bbb",
+        "password": "bbb",
+        "birthday": "010101",
+        "firstlogin": true,
+        "level": "iron",
+        "score": 0
+    },
+    {
+        "username": "dddddd",
+        "password": "ddddddd",
+        "birthday": "010101",
         "firstlogin": true,
         "level": "iron",
         "score": 0
