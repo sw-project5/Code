@@ -1,8 +1,7 @@
 import tkinter
 import tkinter.font
-from login_window import LoginApp  # LoginApp 클래스를 가져옵니다
-from word_description_window import DescriptionWindowApp
-
+from login_window import LoginWindow  # Import the LoginWindow class
+from word_description_window import WordDescriptionWindow
 import customtkinter
 from customtkinter import *
 from PIL import Image
@@ -28,14 +27,22 @@ title_label = customtkinter.CTkLabel(window, text="", bg_color=bgColor, image=im
 title_label.pack()
 
 # 로그인 버튼
-login_app = LoginApp(window)  # LoginApp 인스턴스를 생성합니다
-button_login = customtkinter.CTkButton(master=window, text="로그인", bg_color=bgColor, fg_color=fgColor, hover_color=hoverColor, corner_radius=32, command=login_app.open_login_window)
+login_window_instance = LoginWindow(window)  # Create an instance of LoginWindow
+button_login = customtkinter.CTkButton(master=window, text="로그인", 
+                                       bg_color=bgColor, fg_color=fgColor, 
+                                       hover_color=hoverColor, 
+                                       corner_radius=32, 
+                                       command=login_window_instance.open_login_window)
 button_login.place(relx=0.5, rely=0.5, anchor="center")
 
 # 단어장 설명 버튼
-description_app = DescriptionWindowApp(window)  # DescriptionWindowApp 인스턴스를 생성합니다
-button_description = customtkinter.CTkButton(master=window, text="단어장 설명", bg_color=bgColor, fg_color=fgColor, hover_color=hoverColor, corner_radius=32, command=description_app.open_description_window)
+description_window_instance = WordDescriptionWindow(window)  # Create an instance of WordDescriptionWindow
+button_description = customtkinter.CTkButton(master=window, 
+                                             text="단어장 설명", 
+                                             bg_color=bgColor, 
+                                             fg_color=fgColor, 
+                                             hover_color=hoverColor, 
+                                             corner_radius=32, command=description_window_instance.open_description_window)
 button_description.place(relx=0.5, rely=0.6, anchor="center")
 
 window.mainloop()
-

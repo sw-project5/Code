@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from wordDB import words
 import random
-from user_window import open_user_window
+from user_window import UserWindow
 import json
 # 기본 색상
 bgColor = "#FFDFB9"
@@ -211,4 +211,4 @@ def show_level(window, user_data):
         level_label = tk.Label(window, text=level_text, font=("맑은 고딕", 20))
         level_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         
-        window.after(1000, lambda: (window.destroy(), open_user_window(user)))
+        window.after(1000, lambda: (window.destroy(), UserWindow.open_user_window(user)))
