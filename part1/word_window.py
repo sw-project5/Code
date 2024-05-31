@@ -1,10 +1,27 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from wordDB import words
+from wordDB import words  # 단어 데이터베이스를 포함하는 모듈
 import customtkinter 
 from customtkinter import *
 from PIL import Image
+from abc import ABC, abstractmethod
+
+# 검색 전략 인터페이스
+class SearchStrategy(ABC):
+    @abstractmethod
+    def search(self, query, words):
+        pass
+
+# 영어 단어로 검색하는 전략
+class EnglishWordSearch(SearchStrategy):
+    def search(self, query, words):
+        return [word for word in words if query in list(word.keys())[0].lower()]
+
+# 뜻으로 검색하는 전략
+class MeaningSearch(SearchStrategy):
+    def search(self, query, words):
+        return [word for word in words if query in list(word.values())[0].lower()]
 
 class WordWindow:
     def __init__(self):
@@ -12,6 +29,16 @@ class WordWindow:
         self.fgColor = "#A4193D"
         self.hoverColor = "#C850C0"
         self.words_per_page = 200  # 페이지당 단어 수 줄이기
+        self.search_strategy = EnglishWordSearch()  # 기본 검색 전략 설정
+
+    def set_search_strategy(self, strategy):
+        self.search_strategy = strategy
+
+    def execute_search(self, query):
+        if self.search_strategy:
+            return self.search_strategy.search(query, words)
+        else:
+            raise ValueError("검색 전략이 설정되지 않았습니다.")
 
     def display_words(self, page_num):
         try:
@@ -43,7 +70,6 @@ class WordWindow:
             style = ttk.Style()
             style.configure('Treeview', rowheight=30)  # rowheight 값을 조정하여 뜻 컬럼의 행 높이를 설정합니다.
             
-
             for i, word in enumerate(words[start_index:end_index], start=start_index):
                 for english_word, meaning in word.items():
                     tree.insert('', 'end', values=(english_word, meaning))
@@ -72,6 +98,8 @@ class WordWindow:
             if not query:
                 return
             
+            results = self.execute_search(query)  # 전략에 따라 검색 수행
+
             result_window = customtkinter.CTkToplevel(root)
             result_window.title("검색 결과")
             result_window.geometry("400x500+100+100")
@@ -93,8 +121,6 @@ class WordWindow:
 
             tree.column('word', width=150, anchor='w')
             tree.column('meaning', width=250, anchor='w')
-
-            results = [word for word in words if query in list(word.keys())[0].lower() or query in list(word.values())[0].lower()]
 
             if results:
                 for word in results:
@@ -170,6 +196,7 @@ class WordWindow:
         except Exception as e:
             messagebox.showerror("에러", "일시적인 오류가 발생했습니다. 나중에 다시 시도해주세요.")
 
-# 사용 예시
+# # 사용 예시
 # word_window = WordWindow()
+# word_window.set_search_strategy(EnglishWordSearch())  # 기본 검색 전략 설정
 # word_window.open_wordlist_window()
