@@ -1,50 +1,86 @@
-
-#테스트 누르면 나오는 화면
-import tkinter
-from tkinter import *
-from word_test import open_wordtest_window
-from level_test import open_wordleveltest_window
+import tkinter as tk
+from tkinter import messagebox
 import json
+from word_test import WordTestWindow
+from level_test import LevelTestWindow
 import customtkinter 
 from customtkinter import *
 from PIL import Image
 
-# 기본 색상
-bgColor = "#FFDFB9"
-fgColor = "#A4193D"
-hoverColor = "#C850C0"
+# class TestWindow:
+#     def __init__(self):
+#         self.bgColor = "#FFDFB9"
+#         self.fgColor = "#A4193D"
+#         self.hoverColor = "#C850C0"
 
-def load_user_data(filepath='users.json'):
-    try:
-        with open(filepath, 'r', encoding='utf-8') as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return []
-    except json.JSONDecodeError:
-        return []
+#     def open_test_window(self, user):
+#         self.test_window = customtkinter.CTkToplevel()
+#         self.test_window.title("테스트")
+#         self.test_window.geometry("400x500+100+100")
+#         self.test_window.resizable(False, False)
+#         self.test_window.config(background=self.bgColor)
+
+#         test_label = tk.Label(self.test_window, text="진행할 테스트를 골라주세요!", background=self.bgColor, font=("맑은 고딕", 14))
+#         test_label.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
+
+#         wordtest_button = customtkinter.CTkButton(self.test_window, text="단어테스트", width=80, height=200, command=self.start_word_test, bg_color=self.fgColor, fg_color=self.fgColor, hover_color=self.hoverColor)
+#         wordtest_button.place(relx=0.3, rely=0.4, anchor=tk.CENTER)
+
+#         wordleveltest_button = customtkinter.CTkButton(self.test_window, text="레벨테스트", width=80, height=200, command=lambda: self.start_level_test(user), bg_color=self.fgColor, fg_color=self.fgColor, hover_color=self.hoverColor)
+#         wordleveltest_button.place(relx=0.7, rely=0.4, anchor=tk.CENTER)
+
+#         close_button = customtkinter.CTkButton(self.test_window, text="닫기", width=20, height=10, command=self.test_window.destroy, bg_color=self.fgColor, fg_color=self.fgColor, hover_color=self.hoverColor)
+#         close_button.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
+
+#         self.test_window.attributes("-topmost", True)
+#         self.test_window.after(100, lambda: self.test_window.attributes("-topmost", False))
+#         self.test_window.mainloop()
+
+#     def start_word_test(self):
+#         word_test = WordTestWindow()
+#         word_test.open_wordtest_window()
     
-    
+#     def start_level_test(self, user):
+#         level_test = LevelTestWindow()
+#         level_test.open_wordleveltest_window(user)
 
 
-def open_test_window(user):
-    test_window = customtkinter.CTkToplevel()
-    test_window.title("테스트")
-    test_window.geometry("400x500+100+100")
-    test_window.resizable(False, False)
-    test_window.config(background=bgColor)
 
-    test_label=tkinter.Label(test_window, text="진행할 테스트를 골라주세요!",background=bgColor,font=("맑은 고딕",14))
-    test_label.place(relx=0.5, rely=0.1, anchor=tkinter.CENTER)
+class TestWindow:
+    def __init__(self):
+        self.bgColor = "#FFDFB9"
+        self.fgColor = "#A4193D"
+        self.hoverColor = "#C850C0"
 
-    wordtest_button = customtkinter.CTkButton(test_window, text="단어테스트", width=80, height=200, command=open_wordtest_window,bg_color=fgColor,fg_color=fgColor,hover_color=hoverColor)
-    wordtest_button.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
+    def open_test_window(self, user):
+        self.test_window = customtkinter.CTkToplevel()
+        self.test_window.title("테스트")
+        self.test_window.geometry("400x500+100+100")
+        self.test_window.resizable(False, False)
+        self.test_window.config(background=self.bgColor)
 
-    wordleveltest_button = customtkinter.CTkButton(test_window, text="레벨테스트", width=80, height=200, command=lambda: open_wordleveltest_window(user),bg_color=fgColor,fg_color=fgColor,hover_color=hoverColor)
-    wordleveltest_button.place(relx=0.7, rely=0.4, anchor=tkinter.CENTER)
+        test_label = tk.Label(self.test_window, text="진행할 테스트를 골라주세요!", background=self.bgColor, font=("맑은 고딕", 14))
+        test_label.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
-    close_button = customtkinter.CTkButton(test_window, text="닫기",width=20,height=10, command=test_window.destroy,bg_color=fgColor,fg_color=fgColor,hover_color=hoverColor)
-    close_button.place(relx=0.5, rely=0.9, anchor=tkinter.CENTER)
+        wordtest_button = customtkinter.CTkButton(self.test_window, text="단어테스트", width=80, height=200, command=self.start_word_test, bg_color=self.fgColor, fg_color=self.fgColor, hover_color=self.hoverColor)
+        wordtest_button.place(relx=0.3, rely=0.4, anchor=tk.CENTER)
 
-    test_window.attributes("-topmost", True)
-    test_window.after(100, lambda: test_window.attributes("-topmost", False))
-    test_window.mainloop()
+        wordleveltest_button = customtkinter.CTkButton(self.test_window, text="레벨테스트", width=80, height=200, command=lambda:self.start_level_test(user), bg_color=self.fgColor, fg_color=self.fgColor, hover_color=self.hoverColor)
+        wordleveltest_button.place(relx=0.7, rely=0.4, anchor=tk.CENTER)
+
+        close_button = customtkinter.CTkButton(self.test_window, text="닫기", width=20, height=10, command=self.test_window.destroy, bg_color=self.fgColor, fg_color=self.fgColor, hover_color=self.hoverColor)
+        close_button.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
+
+        self.test_window.attributes("-topmost", True)
+        self.test_window.after(100, lambda: self.test_window.attributes("-topmost", False))
+        self.test_window.mainloop()
+
+    def start_word_test(self):
+        word_test = WordTestWindow()
+        word_test.open_wordtest_window()
+
+    def start_level_test(self, user):
+        level_test = LevelTestWindow()
+        level_test.open_wordleveltest_window(user)
+
+
