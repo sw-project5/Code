@@ -36,8 +36,9 @@ class UserWindow:
     def logout(self):
         confirm = messagebox.askokcancel("로그아웃", "정말 로그아웃 하시겠습니까?")
         if confirm:
-            self.window.destroy()
-            self.open_login_window()
+            logout=messagebox.askokcancel("로그아웃", "로그아웃 되었습니다.\n다시 로그인해주세요.")
+            if logout:
+                self.window.destroy()
 
     def withdraw(self):
         password_window = customtkinter.CTkToplevel(self.window)

@@ -11,13 +11,13 @@ class WordWindow:
         self.bgColor = "#FFDFB9"
         self.fgColor = "#A4193D"
         self.hoverColor = "#C850C0"
-        self.words_per_page = 200
+        self.words_per_page = 200  # 페이지당 단어 수 줄이기
 
     def display_words(self, page_num):
         try:
             page_window = customtkinter.CTkToplevel(root)
             page_window.title(f"TOEICVOCAMACA - 단어장 (part {page_num})")
-            page_window.geometry("400x500+100+100")
+            page_window.geometry("700x500+100+100")
             page_window.resizable(False, False)
             page_window.config(background=self.bgColor)
 
@@ -25,40 +25,37 @@ class WordWindow:
             page_window.update()  # Update the window to apply the topmost attribute
             page_window.attributes("-topmost", False)
 
-            frame = tk.Frame(page_window)
-            frame.pack(pady=20)
-            frame.config(background=self.bgColor)
+            frame = tk.Frame(page_window, background=self.bgColor)
+            frame.pack(pady=(20,0), fill="both", expand=True)
 
             start_index = (page_num - 1) * self.words_per_page
             end_index = min(start_index + self.words_per_page, len(words))
 
-            canvas = tk.Canvas(frame)
-            canvas.config(background=self.bgColor)
-            scrollbar = ttk.Scrollbar(frame, orient="vertical", command=canvas.yview)
+            columns = ('word', 'meaning')
             
-            word_frame = tk.Frame(canvas)
-            word_frame.config(background=self.bgColor)
-            word_frame.bind(
-                "<Configure>",
-                lambda e: canvas.configure(
-                    scrollregion=canvas.bbox("all")
-                )
-            )
+            tree = ttk.Treeview(frame, columns=columns, show='headings', selectmode='none')
 
-            canvas.create_window((0, 0), window=word_frame, anchor="nw")
-            canvas.configure(yscrollcommand=scrollbar.set, background=self.bgColor)
-            canvas.config(background=self.bgColor, width=500, height=600)
+            tree.heading('word', text='단어')
+            tree.heading('meaning', text='뜻')
+
+            tree.column('word', width=150, anchor='w')
+            tree.column('meaning', width=250, anchor='w')
+            style = ttk.Style()
+            style.configure('Treeview', rowheight=30)  # rowheight 값을 조정하여 뜻 컬럼의 행 높이를 설정합니다.
+            
 
             for i, word in enumerate(words[start_index:end_index], start=start_index):
                 for english_word, meaning in word.items():
-                    word_label = tk.Label(word_frame, text=f"{english_word}: {meaning}", anchor='w', justify='left', wraplength=360, background=self.bgColor, font=('맑은 고딕',14))
-                    word_label.pack(anchor="w", padx=10, pady=5)
+                    tree.insert('', 'end', values=(english_word, meaning))
 
-            canvas.pack(side="left", fill="both", expand=True)
+            tree.pack(side="left", fill="both", expand=True)
+
+            scrollbar = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
+            tree.configure(yscrollcommand=scrollbar.set)
             scrollbar.pack(side="right", fill="y")
             
             close_button = customtkinter.CTkButton(page_window, text="닫기", width=20, height=10, bg_color=self.bgColor, fg_color=self.fgColor, hover_color=self.hoverColor, command=page_window.destroy)
-            close_button.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
+            close_button.pack(side="bottom", pady=10)
 
             page_window.attributes("-topmost", True)
             page_window.lift()
@@ -85,44 +82,35 @@ class WordWindow:
             result_window.update()  # Update the window to apply the topmost attribute
             result_window.attributes("-topmost", False)
 
-            frame = tk.Frame(result_window)
-            frame.pack(pady=20)
-            frame.config(background=self.bgColor)
+            frame = tk.Frame(result_window, background=self.bgColor)
+            frame.pack(pady=(20, 0), fill="both", expand=True)
 
-            canvas = tk.Canvas(frame)
-            canvas.config(background=self.bgColor)
-            scrollbar = ttk.Scrollbar(frame, orient="vertical", command=canvas.yview)
+            columns = ('word', 'meaning')
+            tree = ttk.Treeview(frame, columns=columns, show='headings', selectmode='none')
 
-            result_frame = tk.Frame(canvas)
-            result_frame.config(background=self.bgColor)
-            result_frame.bind(
-                "<Configure>",
-                lambda e: canvas.configure(
-                    scrollregion=canvas.bbox("all")
-                )
-            )
+            tree.heading('word', text='단어')
+            tree.heading('meaning', text='뜻')
 
-            canvas.create_window((0, 0), window=result_frame, anchor="nw")
-            canvas.configure(yscrollcommand=scrollbar.set, background=self.bgColor)
-            canvas.config(background=self.bgColor)
+            tree.column('word', width=150, anchor='w')
+            tree.column('meaning', width=250, anchor='w')
 
             results = [word for word in words if query in list(word.keys())[0].lower() or query in list(word.values())[0].lower()]
-            
-            
+
             if results:
                 for word in results:
                     for english_word, meaning in word.items():
-                        word_label = tk.Label(result_frame, text=f"{english_word}: {meaning}", anchor='w', justify='left', wraplength=360, background=self.bgColor)
-                        word_label.pack(anchor="w", padx=10, pady=5)
+                        tree.insert('', 'end', values=(english_word, meaning))
             else:
-                no_result_label = tk.Label(result_frame, text="검색 결과가 없습니다.", anchor='w', justify='left', wraplength=360, background=self.bgColor)
-                no_result_label.pack(anchor="w", padx=10, pady=5)
+                tree.insert('', 'end', values=("검색 결과가 없습니다.", ""))
 
-            canvas.pack(side="left", fill="both", expand=True)
+            tree.pack(side="left", fill="both", expand=True)
+
+            scrollbar = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
+            tree.configure(yscrollcommand=scrollbar.set)
             scrollbar.pack(side="right", fill="y")
             
             close_button = customtkinter.CTkButton(result_window, text="닫기", width=20, height=10, bg_color=self.bgColor, fg_color=self.fgColor, hover_color=self.hoverColor, command=result_window.destroy)
-            close_button.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
+            close_button.pack(side="bottom", pady=10)
 
             result_window.attributes("-topmost", True)
             result_window.lift()
@@ -157,9 +145,8 @@ class WordWindow:
                 search_button.pack(side="left", padx=5)
 
                 # 페이지 버튼을 위한 프레임 생성
-                button_frame = tk.Frame(root)
+                button_frame = tk.Frame(root, background=self.bgColor)
                 button_frame.pack(pady=(10, 20))
-                button_frame.config(background=self.bgColor)
 
                 # 페이지 버튼 추가
                 num_pages = (len(words) + self.words_per_page - 1) // self.words_per_page
@@ -175,6 +162,7 @@ class WordWindow:
             else:
                 no_data_label = tk.Label(root, text="단어가 없습니다", anchor='w', justify='left')
                 no_data_label.pack(pady=20)
+                
             root.attributes("-topmost", True)
             root.after(100, lambda: root.attributes("-topmost", False))
             root.mainloop()
@@ -185,4 +173,3 @@ class WordWindow:
 # 사용 예시
 # word_window = WordWindow()
 # word_window.open_wordlist_window()
-

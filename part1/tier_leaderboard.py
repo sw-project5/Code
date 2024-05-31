@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 import json
 from PIL import Image
-from customtkinter import CTkToplevel, CTkLabel, CTkImage
+from customtkinter import CTkLabel, CTkImage
+import customtkinter
 
 # 기본 색상
 bgColor="#FFDFB9"
@@ -43,7 +44,7 @@ class TierLeaderboard:
                                 size=(230, 230))
         # 이미지를 표시할 레이블 생성
         self.image_label = CTkLabel(self.master, text="", image=ranktableImg, bg_color=bgColor)
-        self.image_label.pack()
+        self.image_label.pack(pady=10)
 
         # 스타일 생성 및 설정
         style = ttk.Style()
@@ -52,33 +53,29 @@ class TierLeaderboard:
                         background=bgColor,
                         foreground='black',
                         fieldbackground=bgColor,
-                        font=('맑은 고딕', 14))  # 글자 크기를 14로 설정
+                        font=('맑은 고딕', 12))  # 글자 크기를 12로 설정
         style.map("Custom.Treeview", background=[("selected", fgColor)])
 
         style.configure("Custom.Treeview.Heading",
                         background=fgColor,
                         foreground=bgColor,
-                        font=('맑은 고딕', 16, 'bold'))  # 헤더 글자 크기를 16으로 설정
+                        font=('맑은 고딕', 14, 'bold'))  # 헤더 글자 크기를 14로 설정
 
-        style.configure("Custom.Vertical.TScrollbar",
+        # 트리뷰(트리 형태의 데이터 구조) 생성
+        self.tree = ttk.Treeview(self.master, style="Custom.Treeview", columns=('Username', 'Tier', 'Score'), show='headings', height=10)
+
+        # 스크롤바 생성
+        self.vsb = ttk.Scrollbar(self.master, orient="vertical", command=self.tree.yview, style="Vertical.TScrollbar")
+        self.tree.configure(yscrollcommand=self.vsb.set)
+
+        # 스크롤바 스타일 설정
+        style.configure("Vertical.TScrollbar",
                         troughcolor=bgColor,
                         background=fgColor,
                         arrowcolor=bgColor,
-                        relief='flat',
                         bordercolor=bgColor,
                         lightcolor=fgColor,
                         darkcolor=fgColor)
-
-        # 트리뷰(트리 형태의 데이터 구조) 생성
-        self.tree = ttk.Treeview(self.master, style="Custom.Treeview", columns=('Username', 'Tier', 'Score'), show='headings')
-
-        # 스크롤바 생성
-        self.vsb = ttk.Scrollbar(self.master, orient="vertical", command=self.tree.yview)
-        self.vsb.pack(side='right', fill='y')
-        self.vsb.config(style="Custom.Vertical.TScrollbar")
-
-        # 트리뷰에 스크롤바 연결
-        self.tree.configure(yscrollcommand=self.vsb.set)
 
         # 각 컬럼 설정
         self.tree.heading('Username', text='Username')
@@ -86,9 +83,9 @@ class TierLeaderboard:
         self.tree.heading('Score', text='Score')
 
         # 컬럼 너비 설정
-        self.tree.column('Username', width=200, anchor='center')
-        self.tree.column('Tier', width=150, anchor='center')
-        self.tree.column('Score', width=150, anchor='center')
+        self.tree.column('Username', width=130, anchor='center')
+        self.tree.column('Tier', width=130, anchor='center')
+        self.tree.column('Score', width=130, anchor='center')
 
         # 사용자 데이터 로드 및 정렬
         user_data = load_user_data()
@@ -99,10 +96,16 @@ class TierLeaderboard:
         for user in sorted_members:
             self.tree.insert('', 'end', values=(user['username'], user['level'], user.get('score', 0)))
 
-        self.tree.pack()
+        # 배치 설정
+        self.tree.pack(side='left', fill='both', expand=True)
+        self.vsb.pack(side='right', fill='y')
 
         # tkinter 메인루프 실행
         self.master.attributes("-topmost", True)
         self.master.after(100, lambda: self.master.attributes("-topmost", False))
         self.master.mainloop()
 
+# Tkinter 창 실행
+if __name__ == "__main__":
+    root = customtkinter.CTk()
+    app = TierLeaderboard(root)

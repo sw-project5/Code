@@ -60,7 +60,7 @@ class LoginWindow:
             elif user.get('level') == "admin":
                 messagebox.showinfo("관리자 로그인 성공", "관리자님 환영합니다.")
                 manager_window = ManagerWindow()  # 관리자 페이지 클래스 인스턴스를 생성
-                manager_window.run()  # 관리자 페이지 실행
+                manager_window.mainloop()  # 관리자 페이지 실행
             else:
                 messagebox.showinfo("로그인 성공", "로그인에 성공했습니다.")
                 # open_user_window(user)

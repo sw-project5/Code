@@ -113,6 +113,16 @@ class ManagerWindow:
                 json.dump(words_data["words"], file, ensure_ascii=False, indent=4)
         except Exception as e:
             messagebox.showerror("에러", "일시적인 오류가 발생했습니다. 나중에 다시 시도해주세요.")
+    def open_login_window(self):
+        import login_window
+        login_window.open_login_window(self.window)
+
+    def logout(self):
+        confirm = messagebox.askokcancel("로그아웃", "정말 로그아웃 하시겠습니까?")
+        if confirm:
+            logout=messagebox.askokcancel("로그아웃", "로그아웃 되었습니다.\n다시 로그인해주세요.")
+            if logout:
+                self.window.destroy()
 
     def create_widgets(self):
         self.word_listbox = tk.Listbox(self.window, height=10, width=50)
@@ -139,5 +149,9 @@ class ManagerWindow:
         delete_button = tk.Button(button_frame, text="Delete", command=self.delete_word)
         delete_button.grid(row=0, column=2)
 
+        logout_button = tk.Button(button_frame, text="Logout", command=self.logout)
+        logout_button.grid(row=0, column=3)
+
         complete_button = tk.Button(self.window, text="Complete", command=self.save_words_to_file)
         complete_button.grid(row=4, column=0, columnspan=3)
+        self.window.mainloop()
